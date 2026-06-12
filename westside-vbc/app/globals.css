@@ -1,9 +1,17 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: #0D1B2A;
-  --color-secondary: #F4B942;
-  --color-accent: #3A86FF;
-  --color-neutral: #FFFFFF;
-  --color-background: #F6F8FA;
+:root {
+  /* Brand Palette */
+  --color-primary: #0D1B2A; /* Dark Navy Blue */
+  --color-accent: #3A86FF;  /* Electric Blue */
+  --color-white: #FFFFFF;    /* White */
+  --color-gray-bg: #F6F8FA;  /* Light Gray Background */
+}
+
+body {
+  background-color: var(--color-gray-bg);
+  color: var(--color-primary);
+  font-family: sans-serif;
 }
