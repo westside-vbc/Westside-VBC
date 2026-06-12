@@ -31,7 +31,7 @@ export default function HomePage() {
       <section className="relative w-full h-[90vh] flex items-center justify-center pt-20 bg-[#0D1B2A]">
         <div className="absolute inset-0 bg-gradient-to-b from-[#0D1B2A]/90 via-[#0D1B2A]/80 to-[#F6F8FA] z-10"></div>
         <img
-          src="https://images.unsplash.com/photo-1592656094267-764a45160876?q=80&w=2070&auto=format&fit=crop"
+          src="/team-photo.jpg"
           alt="Volleyball Action"
           className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-overlay grayscale-[30%]"
         />
