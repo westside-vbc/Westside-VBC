@@ -8,10 +8,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "var(--color-primary)",
-        accent: "var(--color-accent)",
-        neutral: "var(--color-white)",
-        background: "var(--color-gray-bg)",
+        primary: "#0D1B2A",
+        secondary: "#F4B942",
+        accent: "#3A86FF",
+        neutral: "#FFFFFF",
+        background: "#F6F8FA",
       },
     },
   },
