@@ -36,7 +36,7 @@ export default function HomePage() {
         {/* FIXED: Z-0 Image Container with Next/Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&q=80&w=2070"
+            src="/team-photo.jpg"
             alt="Volleyball Action"
             fill
             priority
