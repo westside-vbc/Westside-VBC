@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 :root {
-  /* Brand Palette */
   --color-primary: #0D1B2A; /* Dark Navy Blue */
   --color-accent: #3A86FF;  /* Electric Blue */
   --color-white: #FFFFFF;    /* White */
