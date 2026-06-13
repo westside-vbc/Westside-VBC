@@ -23,7 +23,7 @@ export default function MerchPage() {
     },
     { 
       name: "Westside Sleeveless", 
-      price: "IDR 120.000", 
+      price: "IDR ---", 
       images: [
         "/whiteless.png",
         "/blackless.png",

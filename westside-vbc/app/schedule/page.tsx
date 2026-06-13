@@ -4,7 +4,7 @@ import {MessageCircle, ClipboardList } from "lucide-react"
 export default function SchedulePage() {
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Schedule" imageSrc="/images/hero-schedule.jpg" />
+      <PageHeader title="Schedule" imageSrc="/schedule.jpg" />
 
       <section className="py-20 max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
@@ -16,11 +16,25 @@ export default function SchedulePage() {
           <div className="bg-neutral rounded-3xl p-8 shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition-all">
             <div className="flex items-center gap-4 mb-6 border-b pb-6">
               <div className="bg-accent text-neutral rounded-full w-12 h-12 flex items-center justify-center font-bold text-xs">VBC</div>
+              <h3 className="text-xl font-bold text-primary leading-tight">THURSDAY SESSIONS<br/>SMA MDC</h3>
+            </div>
+            <ul className="space-y-3 text-sm text-gray-700">
+              <li><strong className="text-primary">Sesi:</strong> Kamis</li>
+              <li><strong className="text-primary">Tipe:</strong> Fun Match</li>
+              <li><strong className="text-primary">Waktu:</strong> 19.00 - 21.00 (7 - 9PM)</li>
+              <li><strong className="text-primary">HTM:</strong> Rp. 20.000 / Person</li>
+              <li><strong className="text-primary">Lokasi:</strong> SMA MDC</li>
+            </ul>
+          </div>
+
+          <div className="bg-neutral rounded-3xl p-8 shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition-all">
+            <div className="flex items-center gap-4 mb-6 border-b pb-6">
+              <div className="bg-accent text-neutral rounded-full w-12 h-12 flex items-center justify-center font-bold text-xs">VBC</div>
               <h3 className="text-xl font-bold text-primary leading-tight">SUNDAY SESSIONS<br/>SMA CIPUTRA & MDC</h3>
             </div>
             <ul className="space-y-3 text-sm text-gray-700">
               <li><strong className="text-primary">Sesi:</strong> Minggu</li>
-              <li><strong className="text-primary">Tipe:</strong> Coaching Clinic</li>
+              <li><strong className="text-primary">Tipe:</strong> Private Coaching</li>
               <li><strong className="text-primary">Waktu:</strong> 12.00 - 14.00 (12 - 2PM)</li>
               <li><strong className="text-primary">HTM:</strong> Rp. 35.000 / Person</li>
               <li><strong className="text-primary">Lokasi:</strong> SMA Ciputra / MDC</li>
@@ -35,8 +49,8 @@ export default function SchedulePage() {
             <ul className="space-y-3 text-sm text-gray-700">
               <li><strong className="text-primary">Sesi:</strong> Minggu</li>
               <li><strong className="text-primary">Tipe:</strong> Open Play</li>
-              <li><strong className="text-primary">Waktu:</strong> 12.00 - 14.00 (12 - 2PM)</li>
-              <li><strong className="text-primary">HTM:</strong> Rp. 35.000 / Person</li>
+              <li><strong className="text-primary">Waktu:</strong> 14.00 - 18.00 (12 - 2PM)</li>
+              <li><strong className="text-primary">HTM:</strong> Rp. 20.000 / Person</li>
               <li><strong className="text-primary">Lokasi:</strong> SMA Ciputra / MDC</li>
             </ul>
           </div>
