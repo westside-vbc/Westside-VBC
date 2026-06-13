@@ -1,12 +1,23 @@
 import Link from "next/link"
+import Image from "next/image"
 import { Menu } from "lucide-react"
 
 export default function Navigation() {
   return (
     <nav className="fixed top-0 w-full z-50 bg-primary/95 backdrop-blur-xl border-b border-white/10 transition-all duration-300 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-        <Link href="/" className="text-neutral font-extrabold text-2xl tracking-tighter">
-          WESTSIDE VBC
+        
+        <Link href="/" className="flex items-center gap-3">
+          <Image 
+            src="/west.jpg" 
+            alt="Westside VBC Logo" 
+            width={48} 
+            height={48} 
+            className="w-12 h-auto"
+          />
+          <span className="text-neutral font-extrabold text-2xl tracking-tighter hidden sm:block">
+            WESTSIDE VBC
+          </span>
         </Link>
 
         <div className="hidden lg:flex items-center gap-8 text-neutral/90 text-sm font-semibold tracking-wide">
