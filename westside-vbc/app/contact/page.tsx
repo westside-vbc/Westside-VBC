@@ -15,9 +15,6 @@ export default function ContactPage() {
           </p>
           
           <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="mailto:contact@westsidevbc.com" className="bg-accent text-neutral font-bold px-10 py-4 rounded-full hover:brightness-110 transition-all text-lg shadow-lg">
-              Email Us
-            </a>
             <a href="https://instagram.com/westside.vbc" target="_blank" rel="noreferrer" className="bg-transparent text-neutral border-2 border-neutral/40 px-10 py-4 rounded-full hover:bg-neutral hover:text-primary transition-all text-lg font-bold">
               DM on Instagram
             </a>

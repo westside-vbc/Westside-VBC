@@ -11,40 +11,25 @@ export default function MerchPage() {
 
   const products = [
     { 
-      name: "Pro Training Jersey", 
-      price: "IDR 150.000", 
+      name: "Westside T-Shirt", 
+      price: "IDR ---", 
       images: [
-        "https://images.unsplash.com/photo-1518331647614-7a1f04cd34ce?auto=format&fit=crop&q=80&w=2000",
-        "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&q=80&w=2000"
+        "/white3d.png",
+        "/black3d.png",
+        "/black.png",
+        "/white.png"
       ], 
-      description: "Official Westside VBC training jersey. Lightweight and breathable." 
+      description: "Official Westside VBC jersey. Lightweight and breathable." 
     },
     { 
-      name: "Westside Essential Tee", 
+      name: "Westside Sleeveless", 
       price: "IDR 120.000", 
       images: [
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=2000",
-        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=2000"
+        "/whiteless.png",
+        "/blackless.png",
+        "/less3d.png"
       ], 
-      description: "Everyday cotton tee perfect for casual wear or warmups." 
-    },
-    { 
-      name: "Elite Warmup Jacket", 
-      price: "IDR 350.000", 
-      images: [
-        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=2000",
-        "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&q=80&w=2000"
-      ], 
-      description: "Premium warmup jacket with embroidered club logo." 
-    },
-    { 
-      name: "VBC Court Shorts", 
-      price: "IDR 135.000", 
-      images: [
-        "https://images.unsplash.com/photo-1533681436303-38012bb50e18?auto=format&fit=crop&q=80&w=2000",
-        "https://images.unsplash.com/photo-1565084888279-aca607ecce0c?auto=format&fit=crop&q=80&w=2000"
-      ], 
-      description: "Flexible court shorts designed for maximum mobility." 
+      description: "Official Westside VBC sleeveless. Lightweight and breathable." 
     },
   ]
 
