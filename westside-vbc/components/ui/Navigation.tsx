@@ -10,7 +10,7 @@ export default function Navigation() {
         {/* Clicking this logo or text takes you back to the home page */}
         <Link href="/" className="flex items-center gap-3">
           <Image 
-            src="/logo.png" 
+            src="/west.png" 
             alt="Westside VBC Logo" 
             width={48} 
             height={48} 
