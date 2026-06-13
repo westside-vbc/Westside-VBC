@@ -7,7 +7,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-background flex flex-col w-full">
       <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
         <Image
-          src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&q=80&w=2070"
+          src="/team-photo.jpg"
           alt="Westside VBC Team"
           fill
           priority

@@ -1,5 +1,6 @@
 import PageHeader from "@/components/ui/PageHeader"
-import {MessageCircle, ClipboardList } from "lucide-react"
+import Image from "next/image"
+import { ClipboardList } from "lucide-react"
 
 export default function SchedulePage() {
   return (
@@ -60,20 +61,21 @@ export default function SchedulePage() {
           <h2 className="text-3xl font-black text-primary uppercase tracking-tight mb-12">Cara Mendaftar</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="flex flex-col items-center">
-              <div className="bg-linear-to-tr from-yellow-400 via-red-500 to-purple-500 p-4 rounded-2xl mb-4 text-white">
+              <div className="relative w-16 h-16 mb-4 rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-300 shadow-md">
+                <Image src="/insta.png" alt="Instagram" fill className="object-cover" />
               </div>
               <h4 className="font-bold text-primary mb-2">Follow & DM Instagram</h4>
               <p className="text-xs text-gray-500 max-w-50">@westside.vbc untuk meminta link Whatsapp</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="bg-green-500 p-4 rounded-2xl mb-4 text-white">
-                <MessageCircle className="w-8 h-8" />
+              <div className="relative w-16 h-16 mb-4 rounded-2xl overflow-hidden hover:scale-105 transition-transform duration-300 shadow-md">
+                <Image src="/wa.png" alt="WhatsApp" fill className="object-cover" />
               </div>
               <h4 className="font-bold text-primary mb-2">Join our Community</h4>
               <p className="text-xs text-gray-500 max-w-50">Join grup Whatsapp Westside untuk list nama dan info lainnya</p>
             </div>
             <div className="flex flex-col items-center">
-              <div className="bg-primary p-4 rounded-2xl mb-4 text-white">
+              <div className="bg-primary p-4 rounded-2xl mb-4 text-white hover:scale-105 transition-transform duration-300 shadow-md">
                 <ClipboardList className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-primary mb-2">List your name</h4>
