@@ -7,7 +7,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ 
   title, 
-  imageSrc = "https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&q=80&w=2070" 
+  imageSrc = "/west.png" 
 }: PageHeaderProps) {
   return (
     <section className="relative w-full h-[60vh] flex items-center justify-center pt-20 bg-primary overflow-hidden">
