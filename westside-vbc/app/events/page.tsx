@@ -1,5 +1,4 @@
 import PageHeader from "@/components/ui/PageHeader"
-import Sponsors from "@/components/ui/Sponsors"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -31,8 +30,6 @@ export default function EventsPage() {
           </Link>
         </div>
       </section>
-
-      <Sponsors />
     </main>
   )
 }

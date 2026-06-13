@@ -1,5 +1,4 @@
 import PageHeader from "@/components/ui/PageHeader"
-import Sponsors from "@/components/ui/Sponsors"
 import {MessageCircle, ClipboardList } from "lucide-react"
 
 export default function SchedulePage() {
@@ -69,7 +68,6 @@ export default function SchedulePage() {
           </div>
         </div>
       </section>
-      <Sponsors/>
     </main>
   )
 }

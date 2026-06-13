@@ -1,5 +1,4 @@
 import PageHeader from "@/components/ui/PageHeader";
-import Sponsors from "@/components/ui/Sponsors";
 
 export default function ContactPage() {
   return (
@@ -25,7 +24,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-      <Sponsors />
     </main>
   );
 }
