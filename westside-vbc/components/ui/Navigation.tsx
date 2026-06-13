@@ -7,7 +7,6 @@ export default function Navigation() {
     <nav className="fixed top-0 w-full z-50 bg-primary/95 backdrop-blur-xl border-b border-white/10 transition-all duration-300 shadow-sm">
       <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
         
-        {/* Clicking this logo or text takes you back to the home page */}
         <Link href="/" className="flex items-center gap-3">
           <Image 
             src="/west.png" 
@@ -21,7 +20,6 @@ export default function Navigation() {
           </span>
         </Link>
 
-        {/* Merch is placed exactly to the right of Events */}
         <div className="hidden lg:flex items-center gap-8 text-neutral/90 text-sm font-semibold tracking-wide">
           <Link href="/events" className="hover:text-accent transition-colors">Events</Link>
           <Link href="/merch" className="hover:text-accent transition-colors">Merch</Link>
