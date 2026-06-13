@@ -4,11 +4,9 @@ import { ShoppingBag } from "lucide-react"
 
 export default function MerchPage() {
   const products = [
-    { name: "Pro Training Jersey", price: "IDR 150.000", image: "https://images.unsplash.com/photo-1518331647614-7a1f04cd34ce?auto=format&fit=crop&q=80&w=2000" },
-    { name: "Westside Essential Tee", price: "IDR 120.000", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=2000" },
-    { name: "Elite Warmup Jacket", price: "IDR 350.000", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=2000" },
-    { name: "VBC Court Shorts", price: "IDR 135.000", image: "https://images.unsplash.com/photo-1533681436303-38012bb50e18?auto=format&fit=crop&q=80&w=2000" },
-  ]
+    { name: "Westside Sleeveless", price: "IDR ----", image: "https://images.unsplash.com/photo-1518331647614-7a1f04cd34ce?auto=format&fit=crop&q=80&w=2000" },
+    { name: "Westside T-Shirt", price: "IDR ----", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=2000" },
+    ]
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
