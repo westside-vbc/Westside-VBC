@@ -62,10 +62,9 @@ export default function Sponsors() {
               <motion.div
                 key={i}
                 variants={itemVariants}
-                className="relative group bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-[45%] md:w-auto min-w-55 h-32"
+                className="relative group bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-[45%] md:w-auto min-w-55 h-32 md:h-40"
               >
-                {/* Fixed Size Bounding Box for Uniformity */}
-                <div className="relative w-full h-full max-w-[140px]">
+                <div className="relative w-[90%] h-[90%]">
                   <Image
                     src={partner.src}
                     alt={partner.alt}
@@ -88,8 +87,7 @@ export default function Sponsors() {
                 variants={itemVariants}
                 className="relative group bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-full aspect-4/3"
               >
-                {/* Fixed Size Bounding Box for Uniformity */}
-                <div className="relative w-full h-full max-w-[100px] max-h-[50px]">
+                <div className="relative w-[90%] h-[90%]">
                   <Image
                     src={sponsor.src}
                     alt={sponsor.alt}

@@ -16,7 +16,7 @@ export default function SchedulePage() {
           <div className="bg-neutral rounded-3xl p-8 shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition-all">
             <div className="flex items-center gap-4 mb-6 border-b pb-6">
               <div className="bg-accent text-neutral rounded-full w-12 h-12 flex items-center justify-center font-bold text-xs">VBC</div>
-              <h3 className="text-xl font-bold text-primary leading-tight">THURSDAY SESSIONS<br/>SMA MDC</h3>
+              <h3 className="text-xl font-bold text-primary leading-tight">WEEKDAY FUN MATCH<br/>SMA MDC</h3>
             </div>
             <ul className="space-y-3 text-sm text-gray-700">
               <li><strong className="text-primary">Sesi:</strong> Kamis</li>
@@ -30,7 +30,7 @@ export default function SchedulePage() {
           <div className="bg-neutral rounded-3xl p-8 shadow-sm border border-gray-100 hover:-translate-y-1 hover:shadow-lg transition-all">
             <div className="flex items-center gap-4 mb-6 border-b pb-6">
               <div className="bg-accent text-neutral rounded-full w-12 h-12 flex items-center justify-center font-bold text-xs">VBC</div>
-              <h3 className="text-xl font-bold text-primary leading-tight">SUNDAY SESSIONS<br/>SMA CIPUTRA & MDC</h3>
+              <h3 className="text-xl font-bold text-primary leading-tight">SUNDAY SESSIONS<br/>SMA CIPUTRA / MDC</h3>
             </div>
             <ul className="space-y-3 text-sm text-gray-700">
               <li><strong className="text-primary">Sesi:</strong> Minggu</li>

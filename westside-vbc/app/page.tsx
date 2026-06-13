@@ -1,12 +1,13 @@
 import Link from "next/link"
 import Image from "next/image"
+import { User, Award } from "lucide-react"
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-background flex flex-col w-full">
       <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
         <Image
-          src="/team-photo.jpg"
+          src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&q=80&w=2070"
           alt="Westside VBC Team"
           fill
           priority
@@ -35,7 +36,7 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             <div className="flex flex-col items-center">
-              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
+              <div className="relative w-16 h-16 md:w-20 md:h-20 mb-6 rounded-full overflow-hidden shadow-lg group cursor-pointer hover:scale-105 transition-all duration-300">
                 <Image src="/insta.png" alt="Instagram Followers" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <h3 className="text-4xl font-normal mb-2">4750+</h3>
@@ -43,16 +44,16 @@ export default function HomePage() {
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
-                <Image src="/team-photo.jpg" alt="Members" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 mb-6">
+                <User className="w-12 h-12 md:w-16 md:h-16 text-white" />
               </div>
               <h3 className="text-4xl font-normal mb-2">250+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Members</p>
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
-                <Image src="/west.jpg" alt="Pro Athletes" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="flex items-center justify-center w-16 h-16 md:w-20 md:h-20 mb-6">
+                <Award className="w-12 h-12 md:w-16 md:h-16 text-white" />
               </div>
               <h3 className="text-4xl font-normal mb-2">50+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Pro Athletes & Crew</p>
