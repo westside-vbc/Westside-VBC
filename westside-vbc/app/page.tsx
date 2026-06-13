@@ -1,34 +1,10 @@
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, Trophy, GraduationCap, Medal, Globe } from "lucide-react"
+import { Trophy, GraduationCap, Medal, Globe } from "lucide-react"
 
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-background flex flex-col relative">
-      <nav className="fixed top-0 w-full z-50 bg-primary/95 backdrop-blur-xl border-b border-white/10 transition-all duration-300 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-          <Link href="/" className="text-neutral font-extrabold text-2xl tracking-tighter">
-            WESTSIDE VBC
-          </Link>
-          
-          <div className="hidden lg:flex items-center gap-8 text-neutral/90 text-sm font-semibold tracking-wide">
-            <Link href="/events" className="hover:text-accent transition-colors">Events</Link>
-            <Link href="/schedule" className="hover:text-accent transition-colors">Schedule</Link>
-            <Link href="/gallery" className="hover:text-accent transition-colors">Gallery</Link>
-            <Link href="/support" className="hover:text-accent transition-colors">Support Pages</Link>
-            <Link href="/about" className="hover:text-accent transition-colors">About</Link>
-          </div>
-          
-          <Link href="/contact" className="hidden lg:block bg-accent text-neutral px-8 py-3 rounded-full font-bold hover:brightness-110 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-            Join Westside
-          </Link>
-          
-          <button className="lg:hidden text-neutral">
-            <Menu className="w-7 h-7" />
-          </button>
-        </div>
-      </nav>
-
       <section className="relative w-full h-[90vh] flex items-center justify-center pt-20 bg-primary overflow-hidden">
         
         <div className="absolute inset-0 z-0">
@@ -84,7 +60,7 @@ export default function HomePage() {
             <h3 className="text-xl font-extrabold text-primary mb-3 tracking-tight">College Recruiting</h3>
             <p className="text-gray-600 font-medium leading-relaxed">Dedicated support and highlight videos for NCAA exposure</p>
           </div>
-
+          
           <div className="bg-neutral p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:-translate-y-2 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 flex flex-col items-start group">
             <div className="bg-background p-4 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300">
               <Medal className="text-accent w-8 h-8" />
