@@ -37,7 +37,13 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             <div className="flex flex-col items-center">
               <div className="bg-linear-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-3xl p-4 mb-6 shadow-lg">
-                
+                <Image
+                    src="/insta.png"
+                    alt="insta"
+                    fill
+                    priority
+                    className="object-cover opacity-40"
+                 />
               </div>
               <h3 className="text-4xl font-normal mb-2">4750+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Followers on ig</p>

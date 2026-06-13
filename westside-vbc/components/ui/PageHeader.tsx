@@ -7,7 +7,7 @@ interface PageHeaderProps {
 
 export default function PageHeader({ 
   title, 
-  imageSrc = "/west.png" 
+  imageSrc = "/west.jpg" 
 }: PageHeaderProps) {
   return (
     <section className="relative w-full h-[60vh] flex items-center justify-center pt-20 bg-primary overflow-hidden">
