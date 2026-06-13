@@ -1,6 +1,6 @@
 import PageHeader from "@/components/ui/PageHeader"
 import Partners from "@/components/ui/Partners"
-import { Instagram, MessageCircle, ClipboardList } from "lucide-react"
+import {MessageCircle, ClipboardList } from "lucide-react"
 
 export default function SchedulePage() {
   return (
@@ -48,7 +48,6 @@ export default function SchedulePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             <div className="flex flex-col items-center">
               <div className="bg-linear-to-tr from-yellow-400 via-red-500 to-purple-500 p-4 rounded-2xl mb-4 text-white">
-                <Instagram className="w-8 h-8" />
               </div>
               <h4 className="font-bold text-primary mb-2">Follow & DM Instagram</h4>
               <p className="text-xs text-gray-500 max-w-50">@westside.vbc untuk meminta link Whatsapp</p>

@@ -2,7 +2,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Partners from "@/components/ui/Partners";
 import Image from "next/image";
 import Link from "next/link";
-import { Instagram, Users, Medal } from "lucide-react";
+import {Users, Medal } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -16,7 +16,6 @@ export default function AboutPage() {
           <p className="text-neutral/80 mb-12">We provide professional, organized spaces to play, learn, and compete.</p>
           <div className="grid grid-cols-3 gap-8">
             <div className="flex flex-col items-center">
-              <Instagram className="w-10 h-10 text-secondary mb-3" />
               <span className="text-3xl font-black">4750+</span>
               <span className="text-sm text-neutral/70">Followers on IG</span>
             </div>
