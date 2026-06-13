@@ -10,10 +10,8 @@ export default function MerchPage() {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const products = [
-    { name: "Pro Training Jersey", price: "IDR 150.000", image: "https://images.unsplash.com/photo-1518331647614-7a1f04cd34ce?auto=format&fit=crop&q=80&w=2000", description: "Official Westside VBC training jersey. Lightweight and breathable." },
-    { name: "Westside Essential Tee", price: "IDR 120.000", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=2000", description: "Everyday cotton tee perfect for casual wear or warmups." },
-    { name: "Elite Warmup Jacket", price: "IDR 350.000", image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=2000", description: "Premium warmup jacket with embroidered club logo." },
-    { name: "VBC Court Shorts", price: "IDR 135.000", image: "https://images.unsplash.com/photo-1533681436303-38012bb50e18?auto=format&fit=crop&q=80&w=2000", description: "Flexible court shorts designed for maximum mobility." },
+    { name: "Westside T-Shirt", price: "IDR ----", image: "/black3d.png", description: "Official Westside VBC  jersey. Lightweight and breathable." },
+    { name: "Westside Sleeveless", price: "IDR ----", image: "/blackless.png", description: "Official Westside VBC  jersey. Lightweight and breathable." },
   ]
 
   useEffect(() => {
@@ -26,7 +24,7 @@ export default function MerchPage() {
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Merch" imageSrc="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=2000" />
+      <PageHeader title="Merch" imageSrc="/less3d.png" />
 
       <section className="max-w-7xl mx-auto px-6 py-24 w-full relative z-30 overflow-hidden">
         <div className="flex justify-between items-end mb-12">

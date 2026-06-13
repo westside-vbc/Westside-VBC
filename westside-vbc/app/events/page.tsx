@@ -1,5 +1,5 @@
 import PageHeader from "@/components/ui/PageHeader"
-import Partners from "@/components/ui/Partners"
+import Sponsors from "@/components/ui/Sponsors"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -32,7 +32,7 @@ export default function EventsPage() {
         </div>
       </section>
 
-      <Partners />
+      <Sponsors />
     </main>
   )
 }

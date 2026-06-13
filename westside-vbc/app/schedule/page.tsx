@@ -1,5 +1,5 @@
 import PageHeader from "@/components/ui/PageHeader"
-import Partners from "@/components/ui/Partners"
+import Sponsors from "@/components/ui/Sponsors"
 import {MessageCircle, ClipboardList } from "lucide-react"
 
 export default function SchedulePage() {
@@ -69,8 +69,7 @@ export default function SchedulePage() {
           </div>
         </div>
       </section>
-
-      <Partners />
+      <Sponsors/>
     </main>
   )
 }

@@ -1,5 +1,5 @@
 import PageHeader from "@/components/ui/PageHeader";
-import Partners from "@/components/ui/Partners";
+import Sponsors from "@/components/ui/Sponsors";
 import Image from "next/image";
 
 export default function SupportPage() {
@@ -54,8 +54,7 @@ export default function SupportPage() {
           </div>
         </div>
       </section>
-
-      <Partners />
+      <Sponsors/>
     </main>
   );
 }

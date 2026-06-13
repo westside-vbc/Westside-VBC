@@ -9,7 +9,7 @@ export default function Navigation() {
         
         <Link href="/" className="flex items-center gap-3">
           <Image 
-            src="/west.png" 
+            src="/logo.png" 
             alt="Westside VBC Logo" 
             width={48} 
             height={48} 
@@ -26,7 +26,6 @@ export default function Navigation() {
           <Link href="/schedule" className="hover:text-accent transition-colors">Schedule</Link>
           <Link href="/gallery" className="hover:text-accent transition-colors">Gallery</Link>
           <Link href="/support" className="hover:text-accent transition-colors">Support Pages</Link>
-          <Link href="/about" className="hover:text-accent transition-colors">About</Link>
         </div>
 
         <Link href="/contact" className="hidden lg:block bg-accent text-neutral px-8 py-3 rounded-full font-bold hover:brightness-110 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
