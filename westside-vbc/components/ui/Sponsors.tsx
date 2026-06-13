@@ -62,15 +62,17 @@ export default function Sponsors() {
               <motion.div
                 key={i}
                 variants={itemVariants}
-                className="relative group bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-[45%] md:w-auto min-w-55"
+                className="relative group bg-white rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-[45%] md:w-auto min-w-55 h-32"
               >
-                <Image
-                  src={partner.src}
-                  alt={partner.alt}
-                  width={200}
-                  height={100}
-                  className="object-contain h-20 w-auto group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
+                {/* Fixed Size Bounding Box for Uniformity */}
+                <div className="relative w-full h-full max-w-[140px]">
+                  <Image
+                    src={partner.src}
+                    alt={partner.alt}
+                    fill
+                    className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -86,13 +88,15 @@ export default function Sponsors() {
                 variants={itemVariants}
                 className="relative group bg-white rounded-2xl p-6 shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center w-full aspect-4/3"
               >
-                <Image
-                  src={sponsor.src}
-                  alt={sponsor.alt}
-                  width={150}
-                  height={80}
-                  className="object-contain h-14 w-auto group-hover:scale-110 transition-transform duration-500 ease-out"
-                />
+                {/* Fixed Size Bounding Box for Uniformity */}
+                <div className="relative w-full h-full max-w-[100px] max-h-[50px]">
+                  <Image
+                    src={sponsor.src}
+                    alt={sponsor.alt}
+                    fill
+                    className="object-contain group-hover:scale-110 transition-transform duration-500 ease-out"
+                  />
+                </div>
               </motion.div>
             ))}
           </motion.div>

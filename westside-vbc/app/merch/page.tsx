@@ -7,96 +7,133 @@ import { useState, useEffect } from "react"
 
 export default function MerchPage() {
   const [selectedProduct, setSelectedProduct] = useState<any>(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [imageIndex, setImageIndex] = useState(0)
 
   const products = [
-    { name: "Westside T-Shirt", price: "IDR ----", image: "/black3d.png", description: "Official Westside VBC  jersey. Lightweight and breathable." },
-    { name: "Westside Sleeveless", price: "IDR ----", image: "/blackless.png", description: "Official Westside VBC  jersey. Lightweight and breathable." },
+    { 
+      name: "Pro Training Jersey", 
+      price: "IDR 150.000", 
+      images: [
+        "https://images.unsplash.com/photo-1518331647614-7a1f04cd34ce?auto=format&fit=crop&q=80&w=2000",
+        "https://images.unsplash.com/photo-1581655353564-df123a1eb820?auto=format&fit=crop&q=80&w=2000"
+      ], 
+      description: "Official Westside VBC training jersey. Lightweight and breathable." 
+    },
+    { 
+      name: "Westside Essential Tee", 
+      price: "IDR 120.000", 
+      images: [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=2000",
+        "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&q=80&w=2000"
+      ], 
+      description: "Everyday cotton tee perfect for casual wear or warmups." 
+    },
+    { 
+      name: "Elite Warmup Jacket", 
+      price: "IDR 350.000", 
+      images: [
+        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=2000",
+        "https://images.unsplash.com/photo-1578587018452-892bacefd3f2?auto=format&fit=crop&q=80&w=2000"
+      ], 
+      description: "Premium warmup jacket with embroidered club logo." 
+    },
+    { 
+      name: "VBC Court Shorts", 
+      price: "IDR 135.000", 
+      images: [
+        "https://images.unsplash.com/photo-1533681436303-38012bb50e18?auto=format&fit=crop&q=80&w=2000",
+        "https://images.unsplash.com/photo-1565084888279-aca607ecce0c?auto=format&fit=crop&q=80&w=2000"
+      ], 
+      description: "Flexible court shorts designed for maximum mobility." 
+    },
   ]
 
+  // Auto-rotate product images every 3 seconds
   useEffect(() => {
-    if (selectedProduct) return
+    if (selectedProduct) return // Pause auto-rotate when popup is open
     const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % products.length)
+      setImageIndex((prev) => prev + 1)
     }, 3000)
     return () => clearInterval(timer)
-  }, [selectedProduct, products.length])
+  }, [selectedProduct])
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Merch" imageSrc="/less3d.png" />
+      <PageHeader title="Merch" imageSrc="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=2000" />
 
-      <section className="max-w-7xl mx-auto px-6 py-24 w-full relative z-30 overflow-hidden">
+      <section className="max-w-7xl mx-auto px-6 py-24 w-full relative z-30">
         <div className="flex justify-between items-end mb-12">
-          <h2 className="text-4xl font-black text-primary uppercase tracking-tight">Latest Gear</h2>
+          <h2 className="text-4xl font-black text-[#00274c] uppercase tracking-tight">Latest Gear</h2>
           <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">{products.length} Items</span>
         </div>
 
-        <div 
-          className="flex transition-transform duration-700 ease-in-out gap-8"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-          {products.map((product, i) => (
-            <div 
-              key={i} 
-              onClick={() => setSelectedProduct(product)}
-              className="min-w-full sm:min-w-[calc(50%-1rem)] lg:min-w-[calc(25%-1.5rem)] shrink-0 group bg-neutral rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
-            >
-              <div className="relative aspect-square w-full bg-gray-100 overflow-hidden">
-                <Image 
-                  src={product.image} 
-                  alt={product.name} 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-500" 
-                />
-                <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                  <button className="bg-white text-primary font-bold px-6 py-3 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                    <ShoppingBag className="w-4 h-4" /> Quick View
-                  </button>
+        {/* Standard Grid Layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {products.map((product, i) => {
+            const currentImg = product.images[imageIndex % product.images.length];
+            return (
+              <div 
+                key={i} 
+                onClick={() => setSelectedProduct(product)}
+                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
+              >
+                <div className="relative aspect-square w-full bg-gray-100 overflow-hidden">
+                  <Image 
+                    src={currentImg} 
+                    alt={product.name} 
+                    fill 
+                    className="object-cover transition-opacity duration-1000 ease-in-out" 
+                  />
+                  <div className="absolute inset-0 bg-[#00274c]/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <button className="bg-white text-[#00274c] font-bold px-6 py-3 rounded-full flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                      <ShoppingBag className="w-4 h-4" /> Quick View
+                    </button>
+                  </div>
+                </div>
+                <div className="p-6 text-center">
+                  <h3 className="font-bold text-[#00274c] text-lg mb-1 tracking-tight">{product.name}</h3>
+                  <p className="text-gray-600 font-bold">{product.price}</p>
                 </div>
               </div>
-              <div className="p-6">
-                <h3 className="font-bold text-primary text-lg mb-1">{product.name}</h3>
-                <p className="text-secondary font-black">{product.price}</p>
-              </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </section>
 
-      {selectedProduct ? (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden relative shadow-2xl animate-in fade-in zoom-in duration-300">
+      {/* Popup Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
             <button 
               onClick={() => setSelectedProduct(null)}
-              className="absolute top-4 right-4 z-10 bg-white/50 hover:bg-white p-2 rounded-full transition-colors"
+              className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-sm hover:bg-white p-2 rounded-full transition-colors shadow-sm"
             >
-              <X className="w-6 h-6 text-primary" />
+              <X className="w-6 h-6 text-[#00274c]" />
             </button>
             
-            <div className="relative w-full md:w-1/2 aspect-square md:aspect-auto h-64 md:h-auto">
+            <div className="relative w-full md:w-1/2 aspect-square md:aspect-auto md:h-auto overflow-hidden bg-gray-100">
               <Image 
-                src={selectedProduct.image} 
+                src={selectedProduct.images[imageIndex % selectedProduct.images.length]} 
                 alt={selectedProduct.name} 
                 fill 
-                className="object-cover"
+                className="object-cover transition-opacity duration-700"
               />
             </div>
             
-            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <h3 className="text-3xl font-black text-primary mb-2 tracking-tight">{selectedProduct.name}</h3>
-              <p className="text-2xl font-bold text-accent mb-6">{selectedProduct.price}</p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
+            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
+              <h3 className="text-3xl font-black text-[#00274c] mb-2 tracking-tight">{selectedProduct.name}</h3>
+              <p className="text-2xl font-bold text-blue-600 mb-6">{selectedProduct.price}</p>
+              <p className="text-gray-600 mb-8 leading-relaxed font-medium">
                 {selectedProduct.description}
               </p>
-              <button className="w-full bg-primary text-white font-bold py-4 rounded-full hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 text-lg">
+              <button className="w-full bg-[#00274c] text-white font-bold py-4 rounded-full hover:bg-blue-900 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 text-lg">
                 <ShoppingBag className="w-5 h-5" />
                 Pre-order Now
               </button>
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </main>
   )
 }

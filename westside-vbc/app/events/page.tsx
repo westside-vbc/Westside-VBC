@@ -14,7 +14,7 @@ export default function EventsPage() {
         
         <div className="w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl mb-16 relative aspect-4/5 hover:scale-[1.02] transition-transform duration-500">
           <Image 
-            src="/images/event-banner.jpg" 
+            src="/event.png" 
             alt="Jumping Works Surabaya Event Flyer" 
             fill 
             className="object-cover"

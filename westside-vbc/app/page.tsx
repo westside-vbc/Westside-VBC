@@ -1,6 +1,5 @@
 import Link from "next/link"
 import Image from "next/image"
-import { User, Award } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -36,24 +35,24 @@ export default function HomePage() {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8">
             <div className="flex flex-col items-center">
-              <div className="bg-linear-to-tr from-yellow-400 via-pink-500 to-purple-600 rounded-3xl p-4 mb-6 shadow-lg">
-                
+              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
+                <Image src="/insta.png" alt="Instagram Followers" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <h3 className="text-4xl font-normal mb-2">4750+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Followers on ig</p>
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <User className="w-20 h-20 text-white" fill="white" />
+              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
+                <Image src="/team-photo.jpg" alt="Members" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <h3 className="text-4xl font-normal mb-2">250+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Members</p>
             </div>
             
             <div className="flex flex-col items-center">
-              <div className="mb-6">
-                <Award className="w-20 h-20 text-white" />
+              <div className="relative w-28 h-28 mb-6 rounded-full overflow-hidden shadow-xl border-4 border-white/10 group cursor-pointer hover:scale-105 transition-all duration-300">
+                <Image src="/west.jpg" alt="Pro Athletes" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <h3 className="text-4xl font-normal mb-2">50+</h3>
               <p className="text-sm font-light tracking-wide text-white/80">Pro Athletes & Crew</p>
@@ -66,25 +65,25 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16">
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-4">
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
-              <Image src="/images/merch.jpg" alt="Merch" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800" alt="Merch" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4 text-center">
                 <h4 className="text-white font-black text-xl md:text-3xl leading-none">WESTSIDE<br/>MERCH</h4>
               </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
-              <Image src="/images/tips.jpg" alt="Tips" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1593786481079-065a3cb8cb27?auto=format&fit=crop&q=80&w=800" alt="Tips" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-4 text-center">
                 <h4 className="text-white font-bold text-sm md:text-lg leading-tight mb-2">TIPS BIAR GAK JADI BEBAN<br/>PAS MAIN VOLI</h4>
               </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
-              <Image src="/images/lnyb.jpg" alt="LNYB" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&q=80&w=800" alt="LNYB" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/20 flex items-center justify-center p-4 text-center">
                 <h4 className="text-white font-black text-4xl tracking-tighter drop-shadow-md">LNYB</h4>
               </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
-              <Image src="/images/wanna-rock.jpg" alt="Wanna Rock" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1512719994953-eabf50895df7?auto=format&fit=crop&q=80&w=800" alt="Wanna Rock" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/30 flex items-center justify-center p-4 text-center">
                 <h4 className="text-white font-black text-xl md:text-2xl">WANNA ROCK</h4>
               </div>
@@ -112,7 +111,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Private Coaching</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">Skill-building with professional<br/>guidance</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="/images/private-coaching.jpg" alt="Private Coaching" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800" alt="Private Coaching" fill className="object-cover" />
             </div>
           </div>
 
@@ -120,7 +119,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">1 on 1 Coaching</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">One-on-one personal training.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="/images/1-on-1-coaching.jpg" alt="1 on 1 Coaching" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1593786481079-065a3cb8cb27?auto=format&fit=crop&q=80&w=800" alt="1 on 1 Coaching" fill className="object-cover" />
             </div>
           </div>
 
@@ -128,7 +127,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Fun Match</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">Casual play for networking and<br/>enjoyment.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="/images/fun-match.jpg" alt="Fun Match" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&q=80&w=800" alt="Fun Match" fill className="object-cover" />
             </div>
           </div>
 
@@ -136,7 +135,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Competitive Match</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">High-intensity games for<br/>experienced players.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="/images/competitive-match.jpg" alt="Competitive Match" fill className="object-cover" />
+              <Image src="https://images.unsplash.com/photo-1512719994953-eabf50895df7?auto=format&fit=crop&q=80&w=800" alt="Competitive Match" fill className="object-cover" />
             </div>
           </div>
 
@@ -145,7 +144,7 @@ export default function HomePage() {
 
       <section className="relative w-full h-[60vh] flex items-center justify-center bg-black">
         <Image 
-          src="/images/support-bg.jpg" 
+          src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&q=80&w=2070" 
           alt="Support Us" 
           fill 
           className="object-cover opacity-30" 
