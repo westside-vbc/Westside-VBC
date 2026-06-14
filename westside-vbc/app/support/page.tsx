@@ -1,58 +1,89 @@
-import PageHeader from "@/components/ui/PageHeader";
-import Image from "next/image";
+import PageHeader from "@/components/ui/PageHeader"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function SupportPage() {
   return (
-    <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Support Pages" imageSrc="/support.png" />
+    <main className="min-h-screen bg-background flex flex-col w-full">
+      <PageHeader title="Support Us" imageSrc="/foto1.png" />
 
-      <section className="py-20 max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-4xl font-black text-primary uppercase tracking-tight mb-6">Support Westside Volleyball Community</h2>
-        <p className="text-gray-600 mb-6">Di Westside Volleyball Surabaya, setiap dukungan yang diberikan langsung berdampak pada kualitas latihan dan profesionalitas komunitas Westside Volleyball Surabaya.</p>
-        <p className="text-gray-600 font-medium">Supporting Westside Volleyball is more than just sponsoring a sports program, it's investing in futures.</p>
-      </section>
+      <section className="py-24 px-6 max-w-7xl mx-auto w-full">
+        <div className="text-center mb-20">
+          <h2 className="text-5xl md:text-6xl font-black text-[#00274c] uppercase tracking-tight mb-6">
+            Invest In Our Future
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
+            Support Westside Volleyball. Build champions on and off the court.
+          </p>
+        </div>
 
-      <section className="pb-20 max-w-6xl mx-auto px-6 w-full">
-        <h2 className="text-4xl font-black text-primary uppercase tracking-tight mb-12 text-center">Where Your Support Goes</h2>
-        
-        <div className="flex flex-col gap-6">
-          {/* Card 1 */}
-          <div className="bg-[#0A2463] rounded-3xl overflow-hidden flex flex-col md:flex-row text-white shadow-xl">
-            <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/apparel.png" alt="Team Apparel" fill className="object-cover" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 w-full items-start">
+          
+          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+            <div className="relative w-full overflow-hidden bg-gray-100">
+              <Image 
+                src="/apparel.png" 
+                alt="Apparel" 
+                width={1200}
+                height={1200}
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
             </div>
-            <div className="p-10 md:w-2/3 flex flex-col justify-center">
-              <h3 className="text-2xl font-bold mb-4">Team Identity & Apparel</h3>
-              <p className="text-white/80 text-sm mb-4 leading-relaxed">Professional teams need a professional look. Your support ensures our core team has high-quality gear, putting your brand logo in the spotlight during every match.</p>
-              <p className="text-secondary text-xs font-semibold uppercase tracking-wide">Example: IDR 1,500,000 funds a full set of match jerseys</p>
+            <div className="p-10 flex flex-col items-center text-center">
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Merchandise</h3>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                Wear our colors. Your purchases fund training facilities, equipment, and athlete programs.
+              </p>
+              <Link href="/merch" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
+                Shop Gear
+              </Link>
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-primary rounded-3xl overflow-hidden flex flex-col md:flex-row-reverse text-white shadow-xl">
-            <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/brand.png" alt="Digital Exposure" fill className="object-cover" />
+          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+            <div className="relative w-full overflow-hidden bg-gray-100">
+              <Image 
+                src="/comp.png" 
+                alt="Donations" 
+                width={1200}
+                height={1200}
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
             </div>
-            <div className="p-10 md:w-2/3 flex flex-col justify-center">
-              <h3 className="text-2xl font-bold mb-4">Digital & Brand Exposure</h3>
-              <p className="text-white/80 text-sm mb-4 leading-relaxed">Our website and social media are where we showcase our partners. We use these funds to create high-quality photos and videos that make your brand look its best.</p>
-              <p className="text-secondary text-xs font-semibold uppercase tracking-wide">Example: Helps cover website costs and professional photographers</p>
+            <div className="p-10 flex flex-col items-center text-center">
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Donations</h3>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                Fund our athletes. Your contributions provide scholarships for players needing financial assistance.
+              </p>
+              <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
+                Donate Now
+              </Link>
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="bg-[#0A2463] rounded-3xl overflow-hidden flex flex-col md:flex-row text-white shadow-xl">
-            <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/comp.png" alt="Competitive Events" fill className="object-cover" />
+          <div className="bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+            <div className="relative w-full overflow-hidden bg-gray-100">
+              <Image 
+                src="/brand.png" 
+                alt="Partnerships" 
+                width={1200}
+                height={1200}
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
             </div>
-            <div className="p-10 md:w-2/3 flex flex-col justify-center">
-              <h3 className="text-2xl font-bold mb-4">Competitive Events & Operations</h3>
-              <p className="text-white/80 text-sm mb-4 leading-relaxed">This funding covers the operational costs required to run professional grade matches, events and tournaments.</p>
-              <p className="text-secondary text-xs font-semibold uppercase tracking-wide">Example: IDR 500,000 fully covers the logistics of a one-day tournament</p>
+            <div className="p-10 flex flex-col items-center text-center">
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Partnerships</h3>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                Become a sponsor. Secure dedicated branding across our jerseys, events, and digital platforms.
+              </p>
+              <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
+                Partner With Us
+              </Link>
             </div>
           </div>
+
         </div>
       </section>
     </main>
-  );
+  )
 }
