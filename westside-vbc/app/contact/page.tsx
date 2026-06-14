@@ -3,7 +3,7 @@ import PageHeader from "@/components/ui/PageHeader";
 export default function ContactPage() {
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Join Westside" imageSrc="/images/hero-contact.jpg" />
+      <PageHeader title="Join Westside" imageSrc="/joinwestside.png" />
 
       <section className="py-24 bg-primary text-neutral text-center">
         <div className="max-w-3xl mx-auto px-6">
