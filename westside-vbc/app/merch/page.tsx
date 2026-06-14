@@ -44,11 +44,11 @@ export default function MerchPage() {
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Merch" imageSrc="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&q=80&w=2000" />
+      <PageHeader title="" imageSrc="/merchlogo.png" />
 
       <section className="max-w-7xl mx-auto px-6 py-24 w-full relative z-30">
         <div className="flex justify-between items-end mb-12">
-          <h2 className="text-4xl font-black text-[#00274c] uppercase tracking-tight">Latest Gear</h2>
+          <h2 className="text-4xl font-black text-[#00274c] uppercase tracking-tight">Merchs</h2>
           <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">{products.length} Items</span>
         </div>
 
