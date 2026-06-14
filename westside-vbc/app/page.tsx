@@ -66,7 +66,7 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-center gap-16">
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-4">
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
-              <Image src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800" alt="Merch" fill className="object-cover" />
+              <Image src="/final.png" alt="Merch" fill className="object-cover" />
               <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4 text-center">
                 <h4 className="text-white font-black text-xl md:text-3xl leading-none">WESTSIDE<br/>MERCH</h4>
               </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Private Coaching</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">Skill-building with professional<br/>guidance</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800" alt="Private Coaching" fill className="object-cover" />
+              <Image src="/private.png" alt="Private Coaching" fill className="object-cover" />
             </div>
           </div>
 
@@ -120,7 +120,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">1 on 1 Coaching</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">One-on-one personal training.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="https://images.unsplash.com/photo-1593786481079-065a3cb8cb27?auto=format&fit=crop&q=80&w=800" alt="1 on 1 Coaching" fill className="object-cover" />
+              <Image src="/one.png" alt="1 on 1 Coaching" fill className="object-cover" />
             </div>
           </div>
 
@@ -128,7 +128,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Fun Match</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">Casual play for networking and<br/>enjoyment.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="https://images.unsplash.com/photo-1543326727-cf6c39e8f84c?auto=format&fit=crop&q=80&w=800" alt="Fun Match" fill className="object-cover" />
+              <Image src="/fun.png" alt="Fun Match" fill className="object-cover" />
             </div>
           </div>
 
@@ -136,7 +136,7 @@ export default function HomePage() {
             <h3 className="text-3xl font-black text-[#00274c] mb-2">Competitive Match</h3>
             <p className="text-[#00274c]/80 mb-6 font-medium text-lg">High-intensity games for<br/>experienced players.</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
-              <Image src="https://images.unsplash.com/photo-1512719994953-eabf50895df7?auto=format&fit=crop&q=80&w=800" alt="Competitive Match" fill className="object-cover" />
+              <Image src="/match.png" alt="Competitive Match" fill className="object-cover" />
             </div>
           </div>
 
@@ -145,7 +145,7 @@ export default function HomePage() {
 
       <section className="relative w-full h-[60vh] flex items-center justify-center bg-black">
         <Image 
-          src="https://images.unsplash.com/photo-1592656094267-764a45160876?auto=format&fit=crop&q=80&w=2070" 
+          src="/net.png" 
           alt="Support Us" 
           fill 
           className="object-cover opacity-30" 
@@ -156,7 +156,7 @@ export default function HomePage() {
             Supporting Westside Volleyball is more than just sponsoring a sports program, it's investing in futures
           </p>
           <Link 
-            href="/support" 
+            href="/net.png" 
             className="bg-[#00274c] text-white px-10 py-3 text-xl hover:bg-blue-900 transition-colors"
           >
             Click Here

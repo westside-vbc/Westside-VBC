@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function SupportPage() {
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Support Pages" imageSrc="/images/hero-support.jpg" />
+      <PageHeader title="Support Pages" imageSrc="/support.png" />
 
       <section className="py-20 max-w-4xl mx-auto px-6 text-center">
         <h2 className="text-4xl font-black text-primary uppercase tracking-tight mb-6">Support Westside Volleyball Community</h2>
@@ -19,7 +19,7 @@ export default function SupportPage() {
           {/* Card 1 */}
           <div className="bg-[#0A2463] rounded-3xl overflow-hidden flex flex-col md:flex-row text-white shadow-xl">
             <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/images/support-apparel.jpg" alt="Team Apparel" fill className="object-cover" />
+              <Image src="/apparel.png" alt="Team Apparel" fill className="object-cover" />
             </div>
             <div className="p-10 md:w-2/3 flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-4">Team Identity & Apparel</h3>
@@ -31,7 +31,7 @@ export default function SupportPage() {
           {/* Card 2 */}
           <div className="bg-primary rounded-3xl overflow-hidden flex flex-col md:flex-row-reverse text-white shadow-xl">
             <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/images/support-digital.jpg" alt="Digital Exposure" fill className="object-cover" />
+              <Image src="/brand.png" alt="Digital Exposure" fill className="object-cover" />
             </div>
             <div className="p-10 md:w-2/3 flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-4">Digital & Brand Exposure</h3>
@@ -43,7 +43,7 @@ export default function SupportPage() {
           {/* Card 3 */}
           <div className="bg-[#0A2463] rounded-3xl overflow-hidden flex flex-col md:flex-row text-white shadow-xl">
             <div className="relative w-full md:w-1/3 h-64 md:h-auto">
-              <Image src="/images/support-events.jpg" alt="Competitive Events" fill className="object-cover" />
+              <Image src="/comp.png" alt="Competitive Events" fill className="object-cover" />
             </div>
             <div className="p-10 md:w-2/3 flex flex-col justify-center">
               <h3 className="text-2xl font-bold mb-4">Competitive Events & Operations</h3>
