@@ -7,7 +7,7 @@ export default function GalleryPage() {
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Gallery" imageSrc="/images/hero-gallery.jpg" />
+      <PageHeader title="Gallery" imageSrc="/gallery.png" />
 
       <section className="py-20 max-w-7xl mx-auto px-6 w-full relative z-30">
         <div className="text-center mb-12">

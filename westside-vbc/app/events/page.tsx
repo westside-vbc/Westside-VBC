@@ -5,7 +5,7 @@ import Link from "next/link"
 export default function EventsPage() {
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Events" imageSrc="/images/hero-events.jpg" />
+      <PageHeader title="Events" imageSrc="/events.png" />
 
       <section className="py-20 max-w-4xl mx-auto px-6 w-full flex flex-col items-center relative z-30">
         <h2 className="text-4xl font-black text-primary uppercase tracking-tight mb-12 text-center">
