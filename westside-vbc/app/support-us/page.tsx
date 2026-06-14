@@ -1,4 +1,4 @@
-import PageHeader from "../../components/ui/PageHeader"
+import PageHeader from "@/components/ui/PageHeader"
 import Image from "next/image"
 import Link from "next/link"
 
