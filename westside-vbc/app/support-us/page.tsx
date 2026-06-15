@@ -30,9 +30,13 @@ export default function SupportPage() {
               />
             </div>
             <div className="p-10 flex flex-col items-center text-center">
-              <h3 className="text-3xl font-black text-[#00274c] mb-4">Merchandise</h3>
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Team Identity & Apparel</h3>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Wear our colors. Your purchases fund training facilities, equipment, and athlete programs.
+                Professional teams need a professional look. Your support ensures our core team has high-quality gear, putting your brand logo in the spotlight during every match.
+              </p>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                Example: IDR 1,500,000 funds a full set of match jerseys for the team 
+                (at only IDR 90,000 per jersey).
               </p>
               <Link href="/merch" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Shop Gear
@@ -51,9 +55,12 @@ export default function SupportPage() {
               />
             </div>
             <div className="p-10 flex flex-col items-center text-center">
-              <h3 className="text-3xl font-black text-[#00274c] mb-4">Donations</h3>
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Competitive Events & Operations</h3>  
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Fund our athletes. Your contributions provide scholarships for players needing financial assistance.
+              This funding covers the operational costs required to run professional grade matches, events and tournaments.
+              </p>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+              Example: IDR 500,000 fully covers the logistics and professional execution of a one day tournament.
               </p>
               <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Donate Now
@@ -72,9 +79,12 @@ export default function SupportPage() {
               />
             </div>
             <div className="p-10 flex flex-col items-center text-center">
-              <h3 className="text-3xl font-black text-[#00274c] mb-4">Partnerships</h3>
+              <h3 className="text-3xl font-black text-[#00274c] mb-4">Digital & Brand Exposure</h3>
               <p className="text-gray-600 mb-8 leading-relaxed">
-                Become a sponsor. Secure dedicated branding across our jerseys, events, and digital platforms.
+              Our website and social media are where we showcase our partners. We use these funds to create high-quality photos and videos that make your brand look its best.
+              </p>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+              Example: This helps cover website costs and professional photographers to document our journey and highlight your brand.
               </p>
               <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Partner With Us
