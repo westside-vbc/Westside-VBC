@@ -115,7 +115,7 @@ export default function HomePage() {
 
           <div className="flex flex-col items-center text-center">
             <h3 className="text-3xl font-black text-[#00274c] mb-2">1 on 1 Coaching</h3>
-            <p className="text-[#00274c]/80 mb-6 font-medium text-lg">One-on-one personal training.</p>
+            <p className="text-[#00274c]/80 mb-6 font-medium text-lg">One-on-one personal training<br/>and guidance</p>
             <div className="relative w-full aspect-4/5 bg-gray-200 overflow-hidden shadow-md">
               <Image src="/one.png" alt="1 on 1 Coaching" fill className="object-cover" />
             </div>
