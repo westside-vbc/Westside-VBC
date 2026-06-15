@@ -34,10 +34,6 @@ export default function SupportPage() {
               <p className="text-gray-600 mb-8 leading-relaxed">
                 Professional teams need a professional look. Your support ensures our core team has high-quality gear, putting your brand logo in the spotlight during every match.
               </p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                Example: IDR 1,500,000 funds a full set of match jerseys for the team 
-                (at only IDR 90,000 per jersey).
-              </p>
               <Link href="/merch" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Shop Gear
               </Link>
@@ -59,9 +55,6 @@ export default function SupportPage() {
               <p className="text-gray-600 mb-8 leading-relaxed">
               This funding covers the operational costs required to run professional grade matches, events and tournaments.
               </p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-              Example: IDR 500,000 fully covers the logistics and professional execution of a one day tournament.
-              </p>
               <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Donate Now
               </Link>
@@ -82,9 +75,6 @@ export default function SupportPage() {
               <h3 className="text-3xl font-black text-[#00274c] mb-4">Digital & Brand Exposure</h3>
               <p className="text-gray-600 mb-8 leading-relaxed">
               Our website and social media are where we showcase our partners. We use these funds to create high-quality photos and videos that make your brand look its best.
-              </p>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-              Example: This helps cover website costs and professional photographers to document our journey and highlight your brand.
               </p>
               <Link href="/contact" className="mt-auto bg-[#00274c] text-white px-8 py-4 rounded-full font-bold hover:bg-blue-900 transition-colors w-full">
                 Partner With Us
