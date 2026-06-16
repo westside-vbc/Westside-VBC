@@ -68,23 +68,15 @@ export default function HomePage() {
           <div className="w-full md:w-1/2 grid grid-cols-2 gap-4">
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
               <Image src="/final.png" alt="Merch" fill className="object-cover" />
-              <div className="absolute inset-0 bg-black/40 flex items-center justify-center p-4 text-center">\
-              </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
               <Image src="/foto1.png" alt="Tips" fill className="object-cover" />
-              <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-4 text-center">
-              </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
               <Image src="/foto2.png" alt="LNYB" fill className="object-cover" />
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center p-4 text-center">
-              </div>
             </div>
             <div className="relative aspect-square w-full overflow-hidden bg-gray-300">
               <Image src="/foto3.png" alt="Wanna Rock" fill className="object-cover" />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center p-4 text-center">
-              </div>
             </div>
           </div>
           
