@@ -2,8 +2,18 @@ import PageHeader from "@/components/ui/PageHeader";
 import Image from "next/image";
 
 export default function GalleryPage() {
-  // Mock array for masonry layout mapping
-  const galleryItems = Array.from({ length: 14 }).map((_, i) => `/images/gallery-${(i % 5) + 1}.jpg`);
+  // Use actual images available in public folder
+  const galleryItems = [
+    "/foto1.png",
+    "/foto2.png",
+    "/foto3.png",
+    "/team-photo.jpg",
+    "/match.png",
+    "/fun.png",
+    "/comp.png",
+    "/private.png",
+    "/joinwestside.png"
+  ];
 
   return (
     <main className="min-h-screen bg-background flex flex-col">

@@ -142,7 +142,7 @@ export default function HomePage() {
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
           <h2 className="text-6xl md:text-7xl font-black text-white mb-6 tracking-tight">SUPPORT US!</h2>
           <p className="text-xl md:text-2xl text-white/90 mb-10 font-light leading-relaxed">
-            Supporting Westside Volleyball is more than just sponsoring a sports program, it's investing in futures
+            Supporting Westside Volleyball is more than just sponsoring a sports program, it&apos;s investing in futures
           </p>
           <Link 
             href="/support-us/" 

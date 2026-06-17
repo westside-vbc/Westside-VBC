@@ -4,32 +4,56 @@ import PageHeader from "@/components/ui/PageHeader"
 import Image from "next/image"
 import { ShoppingBag, X } from "lucide-react"
 import { useState, useEffect } from "react"
+import { useCart } from "@/contexts/CartContext"
+import { useAuth } from "@/contexts/AuthContext"
+import { useRouter } from "next/navigation"
+
+interface Product {
+  id: string
+  name: string
+  price: string
+  numericPrice: number
+  images: string[]
+  description: string
+  sizes: string[]
+}
 
 export default function MerchPage() {
-  const [selectedProduct, setSelectedProduct] = useState<any>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [imageIndex, setImageIndex] = useState(0)
+  const [selectedSize, setSelectedSize] = useState<string>("")
+  
+  const { addToCart } = useCart()
+  const { user } = useAuth()
+  const router = useRouter()
 
-  const products = [
+  const products: Product[] = [
     { 
+      id: "westside-tshirt",
       name: "Westside T-Shirt", 
-      price: "IDR ---", 
+      price: "IDR 90.000", 
+      numericPrice: 90000,
       images: [
         "/white3d.png",
         "/black3d.png",
         "/black.png",
         "/white.png"
       ], 
-      description: "Official Westside VBC jersey. Lightweight and breathable." 
+      description: "Official Westside VBC jersey. Lightweight and breathable.",
+      sizes: ["S", "M", "L", "XL", "XXL"]
     },
     { 
+      id: "westside-sleeveless",
       name: "Westside Sleeveless", 
-      price: "IDR ---", 
+      price: "IDR 90.000", 
+      numericPrice: 90000,
       images: [
         "/whiteless.png",
         "/blackless.png",
         "/less3d.png"
       ], 
-      description: "Official Westside VBC sleeveless. Lightweight and breathable." 
+      description: "Official Westside VBC sleeveless. Lightweight and breathable.",
+      sizes: ["S", "M", "L", "XL", "XXL"]
     },
   ]
 
@@ -41,6 +65,37 @@ export default function MerchPage() {
     }, 3000)
     return () => clearInterval(timer)
   }, [selectedProduct])
+
+  const handleAddToCart = () => {
+    if (!user) {
+      router.push("/login")
+      return
+    }
+
+    if (!selectedSize) {
+      alert("Please select a size first")
+      return
+    }
+
+    if (selectedProduct) {
+      addToCart({
+        id: selectedProduct.id,
+        name: selectedProduct.name,
+        price: selectedProduct.price,
+        numericPrice: selectedProduct.numericPrice,
+        image: selectedProduct.images[0],
+        quantity: 1,
+        size: selectedSize
+      })
+      setSelectedProduct(null)
+      setSelectedSize("")
+    }
+  }
+
+  const openProductModal = (product: Product) => {
+    setSelectedProduct(product)
+    setSelectedSize("") // Reset size when opening a new product
+  }
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
@@ -59,7 +114,7 @@ export default function MerchPage() {
             return (
               <div 
                 key={i} 
-                onClick={() => setSelectedProduct(product)}
+                onClick={() => openProductModal(product)}
                 className="group bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col"
               >
                 <div className="relative aspect-square w-full bg-gray-100 overflow-hidden">
@@ -87,7 +142,7 @@ export default function MerchPage() {
 
       {/* Popup Modal */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
           <div className="bg-white rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
             <button 
               onClick={() => setSelectedProduct(null)}
@@ -111,7 +166,30 @@ export default function MerchPage() {
               <p className="text-gray-600 mb-8 leading-relaxed font-medium">
                 {selectedProduct.description}
               </p>
-              <button className="w-full bg-[#00274c] text-white font-bold py-4 rounded-full hover:bg-blue-900 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 text-lg">
+
+              <div className="mb-8">
+                <p className="font-bold text-[#00274c] mb-3">Select Size:</p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedProduct.sizes.map(size => (
+                    <button
+                      key={size}
+                      onClick={() => setSelectedSize(size)}
+                      className={`w-12 h-12 rounded-full font-bold transition-all border-2 ${
+                        selectedSize === size 
+                          ? 'border-[#00274c] bg-[#00274c] text-white' 
+                          : 'border-gray-200 text-gray-600 hover:border-[#00274c]'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <button 
+                onClick={handleAddToCart}
+                className="w-full bg-[#00274c] text-white font-bold py-4 rounded-full hover:bg-blue-900 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 flex items-center justify-center gap-2 text-lg"
+              >
                 <ShoppingBag className="w-5 h-5" />
                 Pre-order Now
               </button>
