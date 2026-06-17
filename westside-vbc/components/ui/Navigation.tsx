@@ -69,6 +69,14 @@ export default function Navigation() {
                 </Link>
               )
             })}
+            {user && (
+              <Link 
+                href="/my-orders" 
+                className={`hover:text-blue-600 transition-colors ${pathname === '/my-orders' ? 'text-blue-600' : ''}`}
+              >
+                My Orders
+              </Link>
+            )}
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
@@ -157,6 +165,15 @@ export default function Navigation() {
               </Link>
             )
           })}
+          {user && (
+            <Link 
+              href="/my-orders"
+              className={`border-b border-gray-100 pb-4 ${pathname === '/my-orders' ? 'text-blue-600' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              My Orders
+            </Link>
+          )}
           
           <div className="border-t border-gray-100 pt-4 flex flex-col gap-4">
             {user ? (
