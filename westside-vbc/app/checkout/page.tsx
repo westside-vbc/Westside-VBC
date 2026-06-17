@@ -15,7 +15,6 @@ export default function CheckoutPage() {
   const router = useRouter()
 
   const [name, setName] = useState(user?.displayName || "")
-  const [nameAndNumber, setNameAndNumber] = useState("")
   const [phone, setPhone] = useState("")
   const [proofFile, setProofFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
@@ -82,7 +81,6 @@ export default function CheckoutPage() {
         userId: user.uid,
         userEmail: user.email,
         customerName: name,
-        nameAndNumber: nameAndNumber,
         phoneNumber: phone,
         items: items,
         totalAmount: totalPrice,
@@ -170,15 +168,11 @@ export default function CheckoutPage() {
             )}
 
             <div>
-              <h3 className="text-xl font-black text-[#00274c] mb-4">1. Personalization</h3>
+              <h3 className="text-xl font-black text-[#00274c] mb-4">1. Personal Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-sm font-bold text-gray-700 mb-1">Full Name</label>
                   <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
-                </div>
-                <div className="col-span-1 md:col-span-2">
-                  <label className="block text-sm font-bold text-gray-700 mb-1">Name and Jersey Number (e.g. J. DOE #10)</label>
-                  <input type="text" required value={nameAndNumber} onChange={e => setNameAndNumber(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" />
                 </div>
                 <div className="col-span-1 md:col-span-2">
                   <label className="block text-sm font-bold text-gray-700 mb-1">Phone Number (WhatsApp active)</label>
@@ -190,11 +184,23 @@ export default function CheckoutPage() {
             <div className="border-t border-gray-100 pt-8">
               <h3 className="text-xl font-black text-[#00274c] mb-4">2. Payment Method</h3>
               <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-6">
-                <p className="text-[#00274c] font-medium mb-4">Please transfer the exact amount of <strong className="text-xl tracking-tight">Rp {totalPrice.toLocaleString('id-ID')}</strong> to the following account:</p>
-                <div className="bg-white p-4 rounded-xl inline-block shadow-sm">
-                  <p className="text-sm text-gray-500 font-bold uppercase tracking-widest mb-1">Bank BCA</p>
-                  <p className="text-2xl font-black text-[#00274c] tracking-tight">123 456 7890</p>
-                  <p className="text-sm font-bold text-gray-600 mt-1">A/N: Westside VBC</p>
+                <p className="text-[#00274c] font-medium mb-6">Please transfer the exact amount of <strong className="text-xl tracking-tight">Rp {totalPrice.toLocaleString('id-ID')}</strong> to the following account or scan the QRIS below:</p>
+                
+                <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div className="bg-white p-6 rounded-xl shadow-sm border border-blue-100 flex-1 w-full">
+                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Bank BCA</p>
+                    <p className="text-2xl font-black text-[#00274c] tracking-tight mb-1">0905035555</p>
+                    <p className="text-sm font-bold text-gray-600">A/N: JASON KRISHNA SINDHU F</p>
+                  </div>
+
+                  <div className="relative w-48 h-48 bg-white p-2 rounded-xl shadow-md border border-gray-100">
+                    <Image 
+                      src="/qris.png" 
+                      alt="QRIS Payment" 
+                      fill 
+                      className="object-contain p-2"
+                    />
+                  </div>
                 </div>
               </div>
 

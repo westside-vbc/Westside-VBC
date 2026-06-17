@@ -9,7 +9,7 @@ import PageHeader from "@/components/ui/PageHeader"
 import { ExternalLink, Eye, X } from "lucide-react"
 
 // Authorized admin emails
-const ADMIN_EMAILS = ["filemonjose13@gmail.com"]
+const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
 
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth()
@@ -103,10 +103,6 @@ export default function AdminDashboard() {
                       <p className="font-bold text-[#00274c]">{order.customerName}</p>
                       <p className="text-sm text-gray-600">{order.userEmail}</p>
                       <p className="text-sm text-gray-600">{order.phoneNumber}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Name and Jersey Number</p>
-                      <p className="text-sm text-gray-700 whitespace-pre-line">{order.nameAndNumber}</p>
                     </div>
                   </div>
 
