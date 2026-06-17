@@ -2,7 +2,7 @@
 
 import PageHeader from "@/components/ui/PageHeader"
 import Image from "next/image"
-import { ShoppingBag, X } from "lucide-react"
+import { ShoppingBag, X, ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useCart } from "@/contexts/CartContext"
 import { useAuth } from "@/contexts/AuthContext"
@@ -21,6 +21,8 @@ interface Product {
 export default function MerchPage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [imageIndex, setImageIndex] = useState(0)
+  const [modalImageIndex, setModalImageIndex] = useState(0)
+  const [zoomedImage, setZoomedImage] = useState<string | null>(null)
   const [selectedSize, setSelectedSize] = useState<string>("")
   
   const { addToCart } = useCart()
@@ -97,6 +99,19 @@ export default function MerchPage() {
   const openProductModal = (product: Product) => {
     setSelectedProduct(product)
     setSelectedSize("") // Reset size when opening a new product
+    setModalImageIndex(0) // Start at the first image
+  }
+
+  const nextModalImage = () => {
+    if (selectedProduct) {
+      setModalImageIndex((prev) => (prev + 1) % selectedProduct.images.length)
+    }
+  }
+
+  const prevModalImage = () => {
+    if (selectedProduct) {
+      setModalImageIndex((prev) => (prev - 1 + selectedProduct.images.length) % selectedProduct.images.length)
+    }
   }
 
   return (
@@ -153,13 +168,38 @@ export default function MerchPage() {
               <X className="w-6 h-6 text-[#00274c]" />
             </button>
             
-            <div className="relative w-full md:w-1/2 aspect-square md:aspect-auto md:h-auto overflow-hidden bg-gray-100">
+            <div className="relative w-full md:w-1/2 aspect-square md:aspect-auto md:h-auto overflow-hidden bg-gray-100 group">
               <Image 
-                src={selectedProduct.images[imageIndex % selectedProduct.images.length]} 
+                src={selectedProduct.images[modalImageIndex]} 
                 alt={selectedProduct.name} 
                 fill 
-                className="object-cover transition-opacity duration-700"
+                className="object-cover transition-opacity duration-300 cursor-zoom-in"
+                onClick={() => setZoomedImage(selectedProduct.images[modalImageIndex])}
               />
+              
+              {/* Navigation Arrows */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); prevModalImage(); }}
+                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors z-10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              >
+                <ChevronLeft className="w-6 h-6 text-[#00274c]" />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); nextModalImage(); }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white transition-colors z-10 opacity-0 group-hover:opacity-100 focus:opacity-100"
+              >
+                <ChevronRight className="w-6 h-6 text-[#00274c]" />
+              </button>
+
+              {/* Image Counter */}
+              <div className="absolute bottom-4 right-4 bg-black/50 text-white px-3 py-1 rounded-full text-xs font-bold pointer-events-none">
+                {modalImageIndex + 1} / {selectedProduct.images.length}
+              </div>
+
+              {/* Zoom Icon Hint */}
+              <div className="absolute top-4 left-4 bg-black/50 p-2 rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+                <ZoomIn className="w-5 h-5 text-white" />
+              </div>
             </div>
             
             <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
@@ -196,6 +236,28 @@ export default function MerchPage() {
                 Pre-order Now
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {/* Zoom Modal */}
+      {zoomedImage && (
+        <div 
+          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 animate-in fade-in duration-300 cursor-zoom-out"
+          onClick={() => setZoomedImage(null)}
+        >
+          <button 
+            onClick={() => setZoomedImage(null)}
+            className="absolute top-4 right-4 z-10 bg-white/10 hover:bg-white/20 p-2 rounded-full transition-colors shadow-sm"
+          >
+            <X className="w-8 h-8 text-white" />
+          </button>
+          <div className="relative w-full h-full max-w-6xl max-h-screen">
+            <Image 
+              src={zoomedImage} 
+              alt="Zoomed Product" 
+              fill 
+              className="object-contain"
+            />
           </div>
         </div>
       )}
