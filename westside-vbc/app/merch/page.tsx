@@ -37,7 +37,8 @@ export default function MerchPage() {
         "/white3d.png",
         "/black3d.png",
         "/black.png",
-        "/white.png"
+        "/white.png",
+        "/size.png"
       ], 
       description: "Official Westside VBC jersey. Lightweight and breathable.",
       sizes: ["S", "M", "L", "XL", "XXL"]
@@ -50,7 +51,8 @@ export default function MerchPage() {
       images: [
         "/whiteless.png",
         "/blackless.png",
-        "/less3d.png"
+        "/less3d.png",
+        "/size.png"
       ], 
       description: "Official Westside VBC sleeveless. Lightweight and breathable.",
       sizes: ["S", "M", "L", "XL", "XXL"]
