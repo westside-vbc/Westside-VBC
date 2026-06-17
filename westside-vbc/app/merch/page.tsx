@@ -160,7 +160,7 @@ export default function MerchPage() {
       {/* Popup Modal */}
       {selectedProduct && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="bg-white rounded-3xl max-w-4xl w-full flex flex-col md:flex-row overflow-hidden relative shadow-2xl">
+          <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative shadow-2xl">
             <button 
               onClick={() => setSelectedProduct(null)}
               className="absolute top-4 right-4 z-10 bg-white/80 backdrop-blur-sm hover:bg-white p-2 rounded-full transition-colors shadow-sm"

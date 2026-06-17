@@ -201,7 +201,7 @@ export default function CheckoutPage() {
                     <p className="text-sm font-bold text-gray-600">A/N: JASON KRISHNA SINDHU F</p>
                   </div>
 
-                  <div className="relative w-48 h-48 bg-white p-2 rounded-xl shadow-md border border-gray-100">
+                  <div className="relative w-48 h-48 bg-white p-2 rounded-xl shadow-md border border-gray-100 flex-shrink-0">
                     <Image 
                       src="/qris.png" 
                       alt="QRIS Payment" 

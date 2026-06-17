@@ -98,12 +98,12 @@ export default function AdminDashboard() {
                 
                 {/* Order Info */}
                 <div className="flex-1">
-                  <div className="flex justify-between items-start mb-4 border-b border-gray-50 pb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start mb-4 border-b border-gray-50 pb-4 gap-4">
                     <div>
                       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order ID</p>
-                      <p className="text-sm font-mono text-gray-800">{order.id}</p>
+                      <p className="text-sm font-mono text-gray-800 break-all">{order.id}</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                       <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
                       <p className="text-sm text-gray-800">
                         {order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}

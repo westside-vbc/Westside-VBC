@@ -13,16 +13,16 @@ export default function HomePage() {
           priority
           className="object-cover opacity-40"
         />
-        <div className="relative z-10 flex flex-col items-center mt-16">
-          <h1 className="text-white font-black text-7xl md:text-[130px] leading-none tracking-tight">
+        <div className="relative z-10 flex flex-col items-center mt-16 px-4">
+          <h1 className="text-white font-black text-5xl sm:text-7xl md:text-9xl lg:text-[130px] leading-none tracking-tight text-center">
             WESTSIDE
           </h1>
           <div className="flex items-center justify-center w-full mt-2 md:mt-4">
-            <div className="h-1 bg-white w-20 md:w-48"></div>
-            <h2 className="text-white font-bold text-3xl md:text-5xl tracking-widest px-4 md:px-8">
+            <div className="h-1 bg-white w-12 sm:w-20 md:w-48"></div>
+            <h2 className="text-white font-bold text-2xl sm:text-3xl md:text-5xl tracking-widest px-4 md:px-8 text-center">
               VBC
             </h2>
-            <div className="h-1 bg-white w-20 md:w-48"></div>
+            <div className="h-1 bg-white w-12 sm:w-20 md:w-48"></div>
           </div>
         </div>
       </section>

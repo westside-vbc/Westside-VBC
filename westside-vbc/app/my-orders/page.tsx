@@ -80,7 +80,7 @@ export default function MyOrdersPage() {
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b border-gray-50 pb-4 gap-4">
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order ID</p>
-                    <p className="font-mono text-sm font-black text-[#00274c]">{order.id}</p>
+                    <p className="font-mono text-sm font-black text-[#00274c] break-all">{order.id}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       {order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A'}
                     </p>
