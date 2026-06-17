@@ -4,9 +4,9 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { db } from "@/lib/firebase"
-import { collection, query, orderBy, getDocs, doc, updateDoc } from "firebase/firestore"
+import { collection, query, orderBy, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"
 import PageHeader from "@/components/ui/PageHeader"
-import { ExternalLink, Eye, X } from "lucide-react"
+import { ExternalLink, Eye, X, Trash2 } from "lucide-react"
 
 // Authorized admin emails
 const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
@@ -59,6 +59,20 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error("Error updating status:", error)
       alert("Failed to update status")
+    }
+  }
+
+  const deleteOrder = async (orderId: string) => {
+    if (!window.confirm("Are you sure you want to completely delete this order? This cannot be undone.")) {
+      return
+    }
+
+    try {
+      await deleteDoc(doc(db, "orders", orderId))
+      setOrders(currentOrders => currentOrders.filter(order => order.id !== orderId))
+    } catch (error) {
+      console.error("Error deleting order:", error)
+      alert("Failed to delete order")
     }
   }
 
@@ -150,6 +164,15 @@ export default function AdminDashboard() {
                       <option value="Processing">Processing</option>
                       <option value="Done">Done</option>
                     </select>
+                  </div>
+
+                  <div className="mt-auto pt-4 border-t border-gray-100">
+                    <button 
+                      onClick={() => deleteOrder(order.id)}
+                      className="w-full inline-flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg hover:bg-red-100 transition-colors"
+                    >
+                      <Trash2 className="w-4 h-4" /> Delete Order
+                    </button>
                   </div>
                 </div>
 
