@@ -14,6 +14,7 @@ export default function MyOrdersPage() {
   const router = useRouter()
   const [orders, setOrders] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [errorMsg, setErrorMsg] = useState("")
 
   useEffect(() => {
     if (authLoading) return
@@ -36,8 +37,9 @@ export default function MyOrdersPage() {
           ...doc.data()
         }))
         setOrders(fetchedOrders)
-      } catch (error) {
-        console.error("Error fetching my orders:", error)
+      } catch (error: any) {
+        console.error("Full Error:", error)
+        setErrorMsg(error.code || error.message)
       } finally {
         setLoading(false)
       }
@@ -55,7 +57,15 @@ export default function MyOrdersPage() {
       <PageHeader title="My Orders" imageSrc="/merchlogo.png" />
 
       <section className="max-w-4xl mx-auto px-6 py-12 w-full">
-        {orders.length === 0 ? (
+        {errorMsg && (
+          <div className="bg-red-50 border border-red-200 text-red-600 p-6 rounded-3xl mb-8 text-center">
+            <p className="font-bold">Connection Error</p>
+            <p className="text-sm font-mono mt-2">{errorMsg}</p>
+            <p className="text-xs mt-4 text-gray-500">If it says 'failed-precondition', click the link in your browser console (F12) to create an index.</p>
+          </div>
+        )}
+
+        {orders.length === 0 && !errorMsg ? (
           <div className="bg-white p-12 text-center rounded-3xl shadow-sm border border-gray-100">
             <h2 className="text-2xl font-black text-[#00274c] mb-4">No orders yet</h2>
             <p className="text-gray-500 mb-8 font-medium">You haven't placed any orders yet. Check out our merch!</p>
