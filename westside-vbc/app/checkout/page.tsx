@@ -20,6 +20,7 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
+  const [orderId, setOrderId] = useState("")
 
   if (!user) {
     router.push("/login")
@@ -89,9 +90,10 @@ export default function CheckoutPage() {
         createdAt: serverTimestamp(),
       }
 
-      await addDoc(collection(db, "orders"), orderData)
+      const docRef = await addDoc(collection(db, "orders"), orderData)
 
       // 3. Clear cart & show success
+      setOrderId(docRef.id)
       clearCart()
       setSuccess(true)
 
@@ -113,10 +115,16 @@ export default function CheckoutPage() {
               <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
             </div>
             <h2 className="text-3xl font-black text-[#00274c] mb-4">Thank You!</h2>
-            <p className="text-gray-600 mb-8">Your order has been received. Our admin will verify your payment and process your order shortly.</p>
-            <button onClick={() => router.push("/")} className="bg-[#00274c] text-white px-8 py-3 rounded-full font-bold hover:bg-blue-900 transition-colors">
-              Return Home
-            </button>
+            <p className="text-gray-600 mb-2">Your order has been received. Our admin will verify your payment and process your order shortly.</p>
+            <div className="bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-8 inline-block px-8">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Your Order ID</p>
+              <p className="text-lg font-mono font-black text-[#00274c]">{orderId}</p>
+            </div>
+            <div className="flex flex-col gap-3 items-center">
+              <button onClick={() => router.push("/")} className="w-full bg-[#00274c] text-white px-8 py-3 rounded-full font-bold hover:bg-blue-900 transition-colors">
+                Return Home
+              </button>
+            </div>
           </div>
         </section>
       </main>
