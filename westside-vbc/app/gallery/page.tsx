@@ -33,7 +33,7 @@ export default function GalleryPage() {
         }));
         
         if (fetchedItems.length > 0) {
-          setGalleryItems(fetchedItems.map(item => item.url));
+          setGalleryItems(fetchedItems.map((item: any) => item.url));
         } else {
           setGalleryItems(fallbackItems);
         }
