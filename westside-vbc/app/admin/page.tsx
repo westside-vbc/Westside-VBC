@@ -3,10 +3,26 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
-import { db } from "@/lib/firebase"
-import { collection, query, orderBy, getDocs, doc, updateDoc, deleteDoc } from "firebase/firestore"
+import { db, storage } from "@/lib/firebase"
+import { 
+  collection, 
+  query, 
+  orderBy, 
+  getDocs, 
+  doc, 
+  updateDoc, 
+  deleteDoc, 
+  addDoc, 
+  serverTimestamp 
+} from "firebase/firestore"
+import { 
+  ref, 
+  uploadBytes, 
+  getDownloadURL, 
+  deleteObject 
+} from "firebase/storage"
 import PageHeader from "@/components/ui/PageHeader"
-import { ExternalLink, Eye, X, Trash2 } from "lucide-react"
+import { ExternalLink, Eye, X, Trash2, Upload, Image as ImageIcon, ShoppingBag, Loader2 } from "lucide-react"
 
 // Authorized admin emails
 const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
@@ -14,8 +30,11 @@ const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<"orders" | "gallery">("orders")
   const [orders, setOrders] = useState<any[]>([])
+  const [gallery, setGallery] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [uploading, setUploading] = useState(false)
   const [selectedProof, setSelectedProof] = useState<string | null>(null)
 
   useEffect(() => {
@@ -26,31 +45,41 @@ export default function AdminDashboard() {
       return
     }
 
-    const fetchOrders = async () => {
+    const fetchData = async () => {
+      setLoading(true)
       try {
-        const q = query(collection(db, "orders"), orderBy("createdAt", "desc"))
-        const querySnapshot = await getDocs(q)
-        const fetchedOrders = querySnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }))
-        setOrders(fetchedOrders)
+        if (activeTab === "orders") {
+          const q = query(collection(db, "orders"), orderBy("createdAt", "desc"))
+          const querySnapshot = await getDocs(q)
+          const fetchedOrders = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          setOrders(fetchedOrders)
+        } else {
+          const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"))
+          const querySnapshot = await getDocs(q)
+          const fetchedGallery = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }))
+          setGallery(fetchedGallery)
+        }
       } catch (error) {
-        console.error("Error fetching orders:", error)
+        console.error("Error fetching data:", error)
       } finally {
         setLoading(false)
       }
     }
 
-    fetchOrders()
-  }, [user, authLoading, router])
+    fetchData()
+  }, [user, authLoading, router, activeTab])
 
   const updateOrderStatus = async (orderId: string, newStatus: string) => {
     try {
       const orderRef = doc(db, "orders", orderId)
       await updateDoc(orderRef, { status: newStatus })
       
-      // Update local state
       setOrders(currentOrders => 
         currentOrders.map(order => 
           order.id === orderId ? { ...order, status: newStatus } : order
@@ -63,7 +92,7 @@ export default function AdminDashboard() {
   }
 
   const deleteOrder = async (orderId: string) => {
-    if (!window.confirm("Are you sure you want to completely delete this order? This cannot be undone.")) {
+    if (!window.confirm("Are you sure you want to completely delete this order?")) {
       return
     }
 
@@ -76,8 +105,50 @@ export default function AdminDashboard() {
     }
   }
 
-  if (authLoading || loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading Dashboard...</div>
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    setUploading(true)
+    try {
+      const storageRef = ref(storage, `gallery/${Date.now()}_${file.name}`)
+      await uploadBytes(storageRef, file)
+      const url = await getDownloadURL(storageRef)
+
+      const docRef = await addDoc(collection(db, "gallery"), {
+        url,
+        storagePath: storageRef.fullPath,
+        createdAt: serverTimestamp()
+      })
+
+      setGallery(prev => [{ id: docRef.id, url, storagePath: storageRef.fullPath }, ...prev])
+      alert("Image uploaded successfully!")
+    } catch (error) {
+      console.error("Error uploading image:", error)
+      alert("Upload failed")
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const deleteGalleryItem = async (id: string, storagePath: string) => {
+    if (!window.confirm("Delete this image from gallery?")) return
+
+    try {
+      if (storagePath) {
+        const storageRef = ref(storage, storagePath)
+        await deleteObject(storageRef)
+      }
+      await deleteDoc(doc(db, "gallery", id))
+      setGallery(prev => prev.filter(item => item.id !== id))
+    } catch (error) {
+      console.error("Error deleting image:", error)
+      alert("Delete failed")
+    }
+  }
+
+  if (authLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>
   }
 
   return (
@@ -85,105 +156,158 @@ export default function AdminDashboard() {
       <PageHeader title="Admin Dashboard" imageSrc="/merchlogo.png" />
 
       <section className="max-w-7xl mx-auto px-6 py-12 w-full">
-        <h2 className="text-3xl font-black text-[#00274c] mb-8">Recent Orders</h2>
+        {/* Tab Navigation */}
+        <div className="flex gap-4 mb-8">
+          <button 
+            onClick={() => setActiveTab("orders")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${
+              activeTab === "orders" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
+            }`}
+          >
+            <ShoppingBag className="w-5 h-5" /> Orders
+          </button>
+          <button 
+            onClick={() => setActiveTab("gallery")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${
+              activeTab === "gallery" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
+            }`}
+          >
+            <ImageIcon className="w-5 h-5" /> Gallery
+          </button>
+        </div>
 
-        {orders.length === 0 ? (
-          <div className="bg-white p-12 text-center rounded-3xl shadow-sm border border-gray-100">
-            <p className="text-gray-500 font-medium">No orders found.</p>
+        {activeTab === "orders" ? (
+          <div>
+            <h2 className="text-3xl font-black text-[#00274c] mb-8">Recent Orders</h2>
+            {loading ? (
+              <div className="flex justify-center py-20"><Loader2 className="animate-spin w-8 h-8 text-primary" /></div>
+            ) : orders.length === 0 ? (
+              <div className="bg-white p-12 text-center rounded-3xl shadow-sm border border-gray-100">
+                <p className="text-gray-500 font-medium">No orders found.</p>
+              </div>
+            ) : (
+              <div className="grid gap-6">
+                {orders.map((order) => (
+                  <div key={order.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-8">
+                    {/* Order Info (Same as before) */}
+                    <div className="flex-1">
+                      <div className="flex flex-col sm:flex-row justify-between items-start mb-4 border-b border-gray-50 pb-4 gap-4">
+                        <div>
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order ID</p>
+                          <p className="text-sm font-mono text-gray-800 break-all">{order.id}</p>
+                        </div>
+                        <div className="text-left sm:text-right">
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
+                          <p className="text-sm text-gray-800">
+                            {order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Customer</p>
+                          <p className="font-bold text-[#00274c]">{order.customerName}</p>
+                          <p className="text-sm text-gray-600">{order.userEmail}</p>
+                          <p className="text-sm text-gray-600">{order.phoneNumber}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Items</p>
+                        <ul className="text-sm text-gray-700 space-y-1">
+                          {order.items.map((item: any, i: number) => (
+                            <li key={i} className="flex justify-between">
+                              <span>{item.quantity}x {item.name} ({item.size})</span>
+                              <span>Rp {(item.numericPrice * item.quantity).toLocaleString('id-ID')}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="mt-2 pt-2 border-t border-gray-50 flex justify-between font-bold text-[#00274c]">
+                          <span>Total</span>
+                          <span>Rp {order.totalAmount.toLocaleString('id-ID')}</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Status & Actions */}
+                    <div className="w-full lg:w-72 flex flex-col gap-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-6 lg:pt-0 lg:pl-8">
+                      <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Payment Proof</p>
+                        <button 
+                          onClick={() => setSelectedProof(order.paymentProofUrl)}
+                          className="w-full inline-flex items-center justify-center gap-2 text-sm bg-blue-50 text-blue-600 font-bold px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors"
+                        >
+                          <Eye className="w-4 h-4" /> View Receipt
+                        </button>
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Status</p>
+                        <select
+                          value={order.status}
+                          onChange={(e) => updateOrderStatus(order.id, e.target.value)}
+                          className={`w-full px-4 py-2 rounded-lg font-bold text-sm border-2 outline-none cursor-pointer ${
+                            order.status === 'Pending' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
+                            order.status === 'Processing' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                            'bg-green-50 border-green-200 text-green-700'
+                          }`}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Processing">Processing</option>
+                          <option value="Done">Done</option>
+                        </select>
+                      </div>
+                      <div className="mt-auto pt-4 border-t border-gray-100">
+                        <button 
+                          onClick={() => deleteOrder(order.id)}
+                          className="w-full inline-flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg hover:bg-red-100 transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" /> Delete Order
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         ) : (
-          <div className="grid gap-6">
-            {orders.map((order) => (
-              <div key={order.id} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col lg:flex-row gap-8">
-                
-                {/* Order Info */}
-                <div className="flex-1">
-                  <div className="flex flex-col sm:flex-row justify-between items-start mb-4 border-b border-gray-50 pb-4 gap-4">
-                    <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Order ID</p>
-                      <p className="text-sm font-mono text-gray-800 break-all">{order.id}</p>
-                    </div>
-                    <div className="text-left sm:text-right">
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
-                      <p className="text-sm text-gray-800">
-                        {order.createdAt ? new Date(order.createdAt.seconds * 1000).toLocaleDateString() : 'N/A'}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                      <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Customer</p>
-                      <p className="font-bold text-[#00274c]">{order.customerName}</p>
-                      <p className="text-sm text-gray-600">{order.userEmail}</p>
-                      <p className="text-sm text-gray-600">{order.phoneNumber}</p>
-                    </div>
-                  </div>
+          <div>
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-3xl font-black text-[#00274c]">Gallery Management</h2>
+              <label className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-2xl font-bold cursor-pointer hover:scale-105 transition-transform shadow-lg">
+                {uploading ? <Loader2 className="animate-spin w-5 h-5" /> : <Upload className="w-5 h-5" />}
+                {uploading ? "Uploading..." : "Upload Image"}
+                <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} disabled={uploading} />
+              </label>
+            </div>
 
-                  <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Items</p>
-                    <ul className="text-sm text-gray-700 space-y-1">
-                      {order.items.map((item: any, i: number) => (
-                        <li key={i} className="flex justify-between">
-                          <span>{item.quantity}x {item.name} ({item.size})</span>
-                          <span>Rp {(item.numericPrice * item.quantity).toLocaleString('id-ID')}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-2 pt-2 border-t border-gray-50 flex justify-between font-bold text-[#00274c]">
-                      <span>Total</span>
-                      <span>Rp {order.totalAmount.toLocaleString('id-ID')}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Status & Actions */}
-                <div className="w-full lg:w-72 flex flex-col gap-4 border-t lg:border-t-0 lg:border-l border-gray-100 pt-6 lg:pt-0 lg:pl-8">
-                  <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Payment Proof</p>
-                    <button 
-                      onClick={() => setSelectedProof(order.paymentProofUrl)}
-                      className="w-full inline-flex items-center justify-center gap-2 text-sm bg-blue-50 text-blue-600 font-bold px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors"
-                    >
-                      <Eye className="w-4 h-4" /> View Receipt
-                    </button>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Status</p>
-                    <select
-                      value={order.status}
-                      onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                      className={`w-full px-4 py-2 rounded-lg font-bold text-sm border-2 outline-none cursor-pointer ${
-                        order.status === 'Pending' ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
-                        order.status === 'Processing' ? 'bg-blue-50 border-blue-200 text-blue-700' :
-                        'bg-green-50 border-green-200 text-green-700'
-                      }`}
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Processing">Processing</option>
-                      <option value="Done">Done</option>
-                    </select>
-                  </div>
-
-                  <div className="mt-auto pt-4 border-t border-gray-100">
-                    <button 
-                      onClick={() => deleteOrder(order.id)}
-                      className="w-full inline-flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg hover:bg-red-100 transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" /> Delete Order
-                    </button>
-                  </div>
-                </div>
-
+            {loading ? (
+              <div className="flex justify-center py-20"><Loader2 className="animate-spin w-8 h-8 text-primary" /></div>
+            ) : gallery.length === 0 ? (
+              <div className="bg-white p-12 text-center rounded-3xl shadow-sm border border-gray-100">
+                <p className="text-gray-500 font-medium">No gallery items found. Upload your first image!</p>
               </div>
-            ))}
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {gallery.map((item) => (
+                  <div key={item.id} className="group relative aspect-square bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+                    <img src={item.url} alt="Gallery" className="w-full h-full object-cover" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                      <button 
+                        onClick={() => deleteGalleryItem(item.id, item.storagePath)}
+                        className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                      >
+                        <Trash2 className="w-6 h-6" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </section>
 
-      {/* Image Modal */}
-      {selectedProof && (
+      {/* Image Modal (for Order Payment Proof) */}
+      {selectedProof && ( activeTab === "orders" && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in duration-300"
           onClick={() => setSelectedProof(null)}
@@ -205,7 +329,7 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      )}
+      ))}
     </main>
   )
 }

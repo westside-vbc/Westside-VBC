@@ -1,9 +1,16 @@
+"use client"
+
+import { useState, useEffect } from "react";
 import PageHeader from "@/components/ui/PageHeader";
-import Image from "next/image";
+import { db } from "@/lib/firebase";
+import { collection, query, orderBy, getDocs } from "firebase/firestore";
 
 export default function GalleryPage() {
-  // Use actual images available in public folder
-  const galleryItems = [
+  const [galleryItems, setGalleryItems] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fallback images if database is empty
+  const fallbackItems = [
     "/foto1.png",
     "/foto2.png",
     "/foto3.png",
@@ -15,6 +22,32 @@ export default function GalleryPage() {
     "/joinwestside.png"
   ];
 
+  useEffect(() => {
+    const fetchGallery = async () => {
+      try {
+        const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"));
+        const querySnapshot = await getDocs(q);
+        const fetchedItems = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        
+        if (fetchedItems.length > 0) {
+          setGalleryItems(fetchedItems.map(item => item.url));
+        } else {
+          setGalleryItems(fallbackItems);
+        }
+      } catch (error) {
+        console.error("Error fetching gallery:", error);
+        setGalleryItems(fallbackItems);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGallery();
+  }, []);
+
   return (
     <main className="min-h-screen bg-background flex flex-col">
       <PageHeader title="Gallery" imageSrc="/gallery.png" />
@@ -25,28 +58,29 @@ export default function GalleryPage() {
           <p className="text-gray-500 mt-2 uppercase tracking-widest text-sm font-semibold">Upload your moments!</p>
         </div>
 
-        {/* Masonry Grid Simulation */}
-        <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
-          {galleryItems.map((src, index) => (
-            <div key={index} className="break-inside-avoid relative rounded-xl overflow-hidden group cursor-pointer">
-              {/* Added variable height simulation for masonry effect */}
-              <div className={`relative w-full ${index % 3 === 0 ? 'h-80' : index % 2 === 0 ? 'h-64' : 'h-48'}`}>
-                <Image 
+        {loading ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4">
+            {galleryItems.map((src, index) => (
+              <div key={index} className="break-inside-avoid mb-4 relative rounded-xl overflow-hidden group cursor-pointer bg-gray-100">
+                <img 
                   src={src} 
                   alt={`Westside Moment ${index + 1}`} 
-                  fill 
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-auto block group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
                 />
-                <div className="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                    <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white">
-                      {/* Play icon simulation for videos */}
-                      {index % 4 === 0 && <span className="ml-1">▶</span>}
+                      {index % 4 === 0 && <span className="ml-1 text-xl">▶</span>}
                    </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );
