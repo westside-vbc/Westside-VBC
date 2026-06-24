@@ -54,7 +54,7 @@ export default function MyOrdersPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
-      <PageHeader title="My Orders" imageSrc="/merchlogo.png" />
+      <PageHeader title="My Orders" imageSrc="/merchlogo.png" imageClassName="object-[center_48%]" />
 
       <section className="max-w-4xl mx-auto px-6 py-12 w-full">
         {errorMsg && (

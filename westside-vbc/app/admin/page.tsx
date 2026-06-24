@@ -22,7 +22,7 @@ import {
   deleteObject 
 } from "firebase/storage"
 import PageHeader from "@/components/ui/PageHeader"
-import { ExternalLink, Eye, X, Trash2, Upload, Image as ImageIcon, ShoppingBag, Loader2 } from "lucide-react"
+import { ExternalLink, Eye, X, Trash2, Upload, Image as ImageIcon, ShoppingBag, Loader2, PackagePlus } from "lucide-react"
 
 // Authorized admin emails
 const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
@@ -30,12 +30,48 @@ const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"orders" | "gallery">("orders")
+  const [activeTab, setActiveTab] = useState<"orders" | "gallery" | "products">("orders")
   const [orders, setOrders] = useState<any[]>([])
   const [gallery, setGallery] = useState<any[]>([])
+  const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [uploadingProduct, setUploadingProduct] = useState(false)
   const [selectedProof, setSelectedProof] = useState<string | null>(null)
+
+  // New Product Form State
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    price: "",
+    numericPrice: 0,
+    description: "",
+    sizes: "S, M, L, XL, XXL",
+    colors: "Black, White",
+  })
+  const [productImages, setProductImages] = useState<FileList | null>(null)
+
+  const fetchData = async () => {
+    setLoading(true)
+    try {
+      if (activeTab === "orders") {
+        const q = query(collection(db, "orders"), orderBy("createdAt", "desc"))
+        const querySnapshot = await getDocs(q)
+        setOrders(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+      } else if (activeTab === "gallery") {
+        const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"))
+        const querySnapshot = await getDocs(q)
+        setGallery(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+      } else if (activeTab === "products") {
+        const q = query(collection(db, "products"), orderBy("createdAt", "desc"))
+        const querySnapshot = await getDocs(q)
+        setProducts(querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (authLoading) return
@@ -43,33 +79,6 @@ export default function AdminDashboard() {
     if (!user || !ADMIN_EMAILS.includes(user.email || "")) {
       router.push("/") // Redirect non-admins to home
       return
-    }
-
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        if (activeTab === "orders") {
-          const q = query(collection(db, "orders"), orderBy("createdAt", "desc"))
-          const querySnapshot = await getDocs(q)
-          const fetchedOrders = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-          setOrders(fetchedOrders)
-        } else {
-          const q = query(collection(db, "gallery"), orderBy("createdAt", "desc"))
-          const querySnapshot = await getDocs(q)
-          const fetchedGallery = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }))
-          setGallery(fetchedGallery)
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error)
-      } finally {
-        setLoading(false)
-      }
     }
 
     fetchData()
@@ -147,28 +156,91 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleAddProduct = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newProduct.name || !productImages || productImages.length === 0) {
+      alert("Please fill all required fields and upload at least one image.")
+      return
+    }
+
+    setUploadingProduct(true)
+    try {
+      const imageUrls = []
+      for (let i = 0; i < productImages.length; i++) {
+        const file = productImages[i]
+        const storageRef = ref(storage, `products/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.]/g, '')}`)
+        await uploadBytes(storageRef, file)
+        const url = await getDownloadURL(storageRef)
+        imageUrls.push(url)
+      }
+
+      const sizesArray = newProduct.sizes.split(",").map(s => s.trim()).filter(s => s)
+      const colorsArray = newProduct.colors.split(",").map(c => c.trim()).filter(c => c)
+      
+      const docRef = await addDoc(collection(db, "products"), {
+        name: newProduct.name,
+        price: newProduct.price,
+        numericPrice: Number(newProduct.numericPrice),
+        description: newProduct.description,
+        sizes: sizesArray,
+        colors: colorsArray,
+        images: imageUrls,
+        createdAt: serverTimestamp()
+      })
+
+      alert("Product added successfully!")
+      setNewProduct({ name: "", price: "", numericPrice: 0, description: "", sizes: "S, M, L, XL, XXL", colors: "Black, White" })
+      setProductImages(null)
+      fetchData()
+    } catch (error) {
+      console.error("Error adding product:", error)
+      alert("Failed to add product")
+    } finally {
+      setUploadingProduct(false)
+    }
+  }
+
+  const deleteProduct = async (productId: string) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return
+    try {
+      await deleteDoc(doc(db, "products", productId))
+      setProducts(prev => prev.filter(p => p.id !== productId))
+    } catch (error) {
+      console.error("Error deleting product:", error)
+      alert("Delete failed")
+    }
+  }
+
   if (authLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>
   }
 
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col">
-      <PageHeader title="Admin Dashboard" imageSrc="/merchlogo.png" />
+      <PageHeader title="Admin Dashboard" imageSrc="/merchlogo.png" imageClassName="object-[center_48%]" />
 
       <section className="max-w-7xl mx-auto px-6 py-12 w-full">
         {/* Tab Navigation */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-4 mb-8 overflow-x-auto pb-2">
           <button 
             onClick={() => setActiveTab("orders")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all whitespace-nowrap ${
               activeTab === "orders" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
             }`}
           >
             <ShoppingBag className="w-5 h-5" /> Orders
           </button>
           <button 
+            onClick={() => setActiveTab("products")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all whitespace-nowrap ${
+              activeTab === "products" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
+            }`}
+          >
+            <PackagePlus className="w-5 h-5" /> Products
+          </button>
+          <button 
             onClick={() => setActiveTab("gallery")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all whitespace-nowrap ${
               activeTab === "gallery" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
             }`}
           >
@@ -260,6 +332,86 @@ export default function AdminDashboard() {
                           className="w-full inline-flex items-center justify-center gap-2 text-sm bg-red-50 text-red-600 font-bold px-4 py-2 rounded-lg hover:bg-red-100 transition-colors"
                         >
                           <Trash2 className="w-4 h-4" /> Delete Order
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : activeTab === "products" ? (
+          <div>
+            <h2 className="text-3xl font-black text-[#00274c] mb-8">Merchandise Management</h2>
+            
+            <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 mb-12">
+              <h3 className="text-xl font-bold mb-6">Add New Product</h3>
+              <form onSubmit={handleAddProduct} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Product Name</label>
+                  <input required type="text" value={newProduct.name} onChange={e => setNewProduct({...newProduct, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" placeholder="e.g. Westside Hoodie" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Display Price Label (Buat tampilan di merch page)</label>
+                  <input required type="text" value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" placeholder="e.g. IDR 150.000" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Price (Masukin tanpa koma atau titik)</label>
+                  <input required type="number" value={newProduct.numericPrice} onChange={e => setNewProduct({...newProduct, numericPrice: parseInt(e.target.value) || 0})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Available Sizes (Pisahin pake koma)</label>
+                  <input required type="text" value={newProduct.sizes} onChange={e => setNewProduct({...newProduct, sizes: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Available Colors (Pisahin pake koma)</label>
+                  <input required type="text" value={newProduct.colors} onChange={e => setNewProduct({...newProduct, colors: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" placeholder="e.g. Black, White, Red" />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-bold text-gray-700 mb-2">Description</label>
+                  <textarea required value={newProduct.description} onChange={e => setNewProduct({...newProduct, description: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-primary" rows={3}></textarea>
+                </div>
+                <div className="md:col-span-2 border-2 border-dashed border-gray-200 p-6 rounded-2xl text-center">
+                  <label className="flex flex-col items-center justify-center cursor-pointer">
+                    <Upload className="w-8 h-8 text-gray-400 mb-2" />
+                    <span className="text-gray-600 font-medium">Upload Product Images</span>
+                    <span className="text-sm text-gray-400 mt-1">Select multiple images (PNG/JPG)</span>
+                    <input type="file" multiple accept="image/*" className="hidden" onChange={e => setProductImages(e.target.files)} />
+                  </label>
+                  {productImages && <p className="mt-4 text-sm font-bold text-primary">{productImages.length} images selected</p>}
+                </div>
+                <div className="md:col-span-2 flex justify-end">
+                  <button type="submit" disabled={uploadingProduct} className="bg-primary text-white font-bold px-8 py-3 rounded-xl hover:bg-blue-900 transition-colors flex items-center gap-2">
+                    {uploadingProduct ? <Loader2 className="animate-spin w-5 h-5" /> : <PackagePlus className="w-5 h-5" />}
+                    {uploadingProduct ? "Adding Product..." : "Add Product"}
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <h3 className="text-2xl font-bold text-[#00274c] mb-6">Added Products</h3>
+            {loading ? (
+              <div className="flex justify-center py-20"><Loader2 className="animate-spin w-8 h-8 text-primary" /></div>
+            ) : products.length === 0 ? (
+              <div className="bg-white p-12 text-center rounded-3xl shadow-sm border border-gray-100">
+                <p className="text-gray-500 font-medium">No custom products added yet. Note: Hardcoded products will still appear on the merch page.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product) => (
+                  <div key={product.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                    <div className="h-48 bg-gray-50 relative">
+                      {product.images && product.images.length > 0 && (
+                        <img src={product.images[0]} alt={product.name} className="w-full h-full object-contain p-4" />
+                      )}
+                    </div>
+                    <div className="p-6 flex-1 flex flex-col">
+                      <h4 className="font-bold text-lg mb-1">{product.name}</h4>
+                      <p className="text-primary font-bold mb-4">{product.price}</p>
+                      <p className="text-sm text-gray-500 line-clamp-2 mb-4">{product.description}</p>
+                      <div className="mt-auto">
+                        <button onClick={() => deleteProduct(product.id)} className="w-full py-2 bg-red-50 text-red-600 font-bold rounded-xl flex items-center justify-center gap-2 hover:bg-red-100 transition-colors">
+                          <Trash2 className="w-4 h-4" /> Delete
                         </button>
                       </div>
                     </div>

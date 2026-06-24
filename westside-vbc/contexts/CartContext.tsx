@@ -13,13 +13,14 @@ export interface CartItem {
   image: string
   quantity: number
   size?: string
+  color?: string
 }
 
 interface CartContextType {
   items: CartItem[]
   addToCart: (item: CartItem) => void
-  removeFromCart: (id: string, size?: string) => void
-  updateQuantity: (id: string, size: string | undefined, quantity: number) => void
+  removeFromCart: (id: string, size?: string, color?: string) => void
+  updateQuantity: (id: string, size: string | undefined, color: string | undefined, quantity: number) => void
   clearCart: () => void
   totalItems: number
   totalPrice: number
@@ -75,7 +76,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addToCart = (newItem: CartItem) => {
     setItems(currentItems => {
       const existingItemIndex = currentItems.findIndex(
-        item => item.id === newItem.id && item.size === newItem.size
+        item => item.id === newItem.id && item.size === newItem.size && item.color === newItem.color
       )
 
       if (existingItemIndex > -1) {
@@ -91,19 +92,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsCartOpen(true) // Open cart when adding an item
   }
 
-  const removeFromCart = (id: string, size?: string) => {
+  const removeFromCart = (id: string, size?: string, color?: string) => {
     setItems(currentItems => currentItems.filter(
-      item => !(item.id === id && item.size === size)
+      item => !(item.id === id && item.size === size && item.color === color)
     ))
   }
 
-  const updateQuantity = (id: string, size: string | undefined, quantity: number) => {
+  const updateQuantity = (id: string, size: string | undefined, color: string | undefined, quantity: number) => {
     if (quantity <= 0) {
-      removeFromCart(id, size)
+      removeFromCart(id, size, color)
       return
     }
     setItems(currentItems => currentItems.map(item => {
-      if (item.id === id && item.size === size) {
+      if (item.id === id && item.size === size && item.color === color) {
         return { ...item, quantity }
       }
       return item

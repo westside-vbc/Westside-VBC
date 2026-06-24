@@ -45,7 +45,7 @@ export default function CartDrawer() {
             </div>
           ) : (
             items.map((item) => (
-              <div key={`${item.id}-${item.size}`} className="flex gap-4 border-b border-gray-50 pb-6">
+              <div key={`${item.id}-${item.size}-${item.color || 'none'}`} className="flex gap-4 border-b border-gray-50 pb-6">
                 <div className="relative w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                   <Image src={item.image} alt={item.name} fill className="object-cover" />
                 </div>
@@ -54,15 +54,25 @@ export default function CartDrawer() {
                     <div className="flex justify-between items-start mb-1">
                       <h3 className="font-bold text-[#00274c] leading-tight">{item.name}</h3>
                       <button 
-                        onClick={() => removeFromCart(item.id, item.size)}
+                        onClick={() => removeFromCart(item.id, item.size, item.color)}
                         className="text-gray-400 hover:text-red-500 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                    <p className="text-sm text-gray-500 font-medium mb-1">
-                      Size: <span className="text-[#00274c]">{item.size || 'One Size'}</span>
-                    </p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-sm text-gray-500 font-medium">
+                        Size: <span className="text-[#00274c]">{item.size || 'One Size'}</span>
+                      </p>
+                      {item.color && (
+                        <>
+                          <span className="text-gray-300">•</span>
+                          <p className="text-sm text-gray-500 font-medium">
+                            Color: <span className="text-[#00274c]">{item.color}</span>
+                          </p>
+                        </>
+                      )}
+                    </div>
                     <p className="text-[#00274c] font-bold">
                       Rp {item.numericPrice.toLocaleString('id-ID')}
                     </p>
@@ -70,14 +80,14 @@ export default function CartDrawer() {
                   
                   <div className="flex items-center gap-3 mt-2">
                     <button 
-                      onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
+                      onClick={() => updateQuantity(item.id, item.size, item.color, item.quantity - 1)}
                       className="p-1.5 rounded-full border border-gray-200 hover:border-gray-300 text-gray-500 transition-colors"
                     >
                       <Minus className="w-3 h-3" />
                     </button>
                     <span className="font-bold text-sm w-4 text-center">{item.quantity}</span>
                     <button 
-                      onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
+                      onClick={() => updateQuantity(item.id, item.size, item.color, item.quantity + 1)}
                       className="p-1.5 rounded-full border border-gray-200 hover:border-gray-300 text-gray-500 transition-colors"
                     >
                       <Plus className="w-3 h-3" />
