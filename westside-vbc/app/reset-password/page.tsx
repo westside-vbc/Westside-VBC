@@ -20,7 +20,7 @@ export default function ResetPasswordPage() {
 
     try {
       await resetPassword(email)
-      setMessage("Success! Check your email inbox for the reset link.")
+      setMessage("Success! Check your email inbox or spam folder for the reset link.")
       setEmail("")
     } catch (err: any) {
       setError(err.message || "Failed to send password reset email")
@@ -31,7 +31,7 @@ export default function ResetPasswordPage() {
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <PageHeader title="Reset Password" imageSrc="/merchlogo.png" />
+      <PageHeader title="Reset Password" imageSrc="/merchlogo.png" imageClassName="object-[center_48%]"/>
 
       <section className="flex-grow flex items-center justify-center py-20 px-6">
         <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
