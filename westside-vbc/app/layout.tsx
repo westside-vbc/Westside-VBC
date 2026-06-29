@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import Navigation from "@/components/ui/Navigation"
 import Sponsors from "@/components/ui/Sponsors"
+import WelcomeAnimation from "@/components/ui/WelcomeAnimation"
+import PageTransition from "@/components/ui/PageTransition"
 
 import { AuthProvider } from "@/contexts/AuthContext"
 import { CartProvider } from "@/contexts/CartContext"
@@ -32,10 +34,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
         <AuthProvider>
           <CartProvider>
+            <WelcomeAnimation />
             <Navigation />
-            <div className="grow">
+            <PageTransition>
               {children}
-            </div>
+            </PageTransition>
             <Sponsors />
           </CartProvider>
         </AuthProvider>

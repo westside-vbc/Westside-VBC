@@ -8,9 +8,11 @@ import { usePathname } from "next/navigation"
 import { useCart } from "@/contexts/CartContext"
 import { useAuth } from "@/contexts/AuthContext"
 import CartDrawer from "./CartDrawer"
+import { motion, AnimatePresence } from "framer-motion"
 
 export default function Navigation() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const { totalItems, setIsCartOpen } = useCart()
   const { user, logout } = useAuth()
@@ -23,196 +25,262 @@ export default function Navigation() {
     }
   }, [isMobileMenuOpen])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   const navLinks = [
     { name: "Events", href: "/events" },
     { name: "Merch", href: "/merch" },
     { name: "Schedule", href: "/schedule" },
     { name: "Gallery", href: "/gallery" },
-    // Trailing slash forces Next.js to load the page, not the image file
-    { name: "Support Pages", href: "/support-us/" },
+    { name: "Support Us", href: "/support-us" },
   ]
+  if (user) navLinks.push({ name: "My Orders", href: "/my-orders" })
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 transition-all duration-300 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className={`fixed top-0 w-full z-50 bg-white/95 backdrop-blur-xl border-b border-gray-200 transition-all duration-300 ${scrolled ? 'shadow-md py-2' : 'shadow-sm py-4'}`}
+      >
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           
           <Link 
             href="/" 
-            className="flex items-center gap-3 z-50"
+            className="flex items-center gap-3 z-50 group"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div className="relative w-10 h-10 md:w-12 md:h-12">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="relative w-10 h-10 md:w-12 md:h-12"
+            >
               <Image 
                 src="/logo.png" 
                 alt="Westside VBC Logo" 
                 fill
                 className="object-contain"
               />
-            </div>
-            <span className="text-[#00274c] font-black text-xl md:text-2xl tracking-tighter">
+            </motion.div>
+            <span className="font-black text-xl md:text-2xl tracking-tighter text-[#00274c] transition-colors">
               WESTSIDE VBC
             </span>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8 text-[#00274c]/90 text-sm font-bold tracking-wide">
+          <div className="hidden lg:flex items-center gap-2 text-sm font-bold tracking-wide">
             {navLinks.map((link) => {
-              // Highlight active link whether it has a trailing slash or not
               const isActive = pathname === link.href || pathname === link.href.replace(/\/$/, '')
               return (
                 <Link 
                   key={link.name}
                   href={link.href} 
-                  className={`hover:text-blue-600 transition-colors ${isActive ? 'text-blue-600' : ''}`}
+                  className={`relative px-4 py-2 transition-colors duration-300 rounded-full hover:bg-gray-100 ${isActive ? 'text-blue-600' : 'text-[#00274c]'}`}
                 >
                   {link.name}
+                  {isActive && (
+                    <motion.div 
+                      layoutId="nav-indicator"
+                      className="absolute inset-0 bg-blue-50/50 border border-blue-100 rounded-full -z-10"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
                 </Link>
               )
             })}
-            {user && (
-              <Link 
-                href="/my-orders" 
-                className={`hover:text-blue-600 transition-colors ${pathname === '/my-orders' ? 'text-blue-600' : ''}`}
-              >
-                My Orders
-              </Link>
-            )}
           </div>
 
-          <div className="hidden lg:flex items-center gap-4">
-            <button 
+          <div className="hidden lg:flex items-center gap-3">
+            <motion.button 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2 text-[#00274c] hover:text-blue-600 transition-colors"
+              className="relative p-2 rounded-full transition-colors text-[#00274c] hover:bg-gray-100"
             >
-              <ShoppingBag className="w-6 h-6" />
+              <ShoppingBag className="w-5 h-5" />
               {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                >
                   {totalItems}
-                </span>
+                </motion.span>
               )}
-            </button>
+            </motion.button>
             
             {user ? (
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={logout}
-                className="p-2 text-[#00274c] hover:text-red-600 transition-colors"
+                className="p-2 rounded-full transition-colors text-[#00274c] hover:bg-red-50"
                 title="Logout"
               >
                 <LogOut className="w-5 h-5" />
-              </button>
+              </motion.button>
             ) : (
               <Link 
                 href="/login"
-                className="p-2 text-[#00274c] hover:text-blue-600 transition-colors"
+                className="p-2 rounded-full transition-colors text-[#00274c] hover:bg-gray-100"
                 title="Login"
               >
-                <UserIcon className="w-5 h-5" />
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <UserIcon className="w-5 h-5" />
+                </motion.div>
               </Link>
             )}
 
-            <Link href="/contact" className="bg-[#00274c] text-white px-6 py-2.5 rounded-full font-bold hover:bg-blue-900 transition-all shadow-md hover:-translate-y-0.5 ml-2">
-              Join Westside
+            <Link href="/contact">
+              <motion.div 
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-[#00274c] text-white px-6 py-2.5 rounded-full font-bold shadow-md hover:shadow-lg transition-all ml-2"
+              >
+                Join Westside
+              </motion.div>
             </Link>
           </div>
 
-          <div className="lg:hidden flex items-center gap-4 z-50">
-            <button 
+          <div className="lg:hidden flex items-center gap-3 z-50">
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsCartOpen(true)}
               className="relative p-2 text-[#00274c]"
             >
               <ShoppingBag className="w-6 h-6" />
               {totalItems > 0 && (
-                <span className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">
+                <motion.span 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                >
                   {totalItems}
-                </span>
+                </motion.span>
               )}
-            </button>
+            </motion.button>
 
-            <button 
+            <motion.button 
+              whileTap={{ scale: 0.9 }}
               className="text-[#00274c] p-2"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle Menu"
             >
-              {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
-            </button>
+              <motion.div animate={{ rotate: isMobileMenuOpen ? 90 : 0 }}>
+                {isMobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
+              </motion.div>
+            </motion.button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      <div 
-        className={`fixed inset-0 bg-black/50 z-40 lg:hidden transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setIsMobileMenuOpen(false)}
-      />
-
-      <div 
-        className={`fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white z-40 lg:hidden transform transition-transform duration-300 ease-in-out shadow-2xl flex flex-col pt-24 pb-8 px-6 overflow-y-auto ${
-          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex flex-col gap-6 text-xl font-black text-[#00274c]">
-          {navLinks.map((link) => {
-            const isActive = pathname === link.href || pathname === link.href.replace(/\/$/, '')
-            return (
-              <Link 
-                key={link.name}
-                href={link.href}
-                className={`border-b border-gray-100 pb-4 ${isActive ? 'text-blue-600' : ''}`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
-            )
-          })}
-          {user && (
-            <Link 
-              href="/my-orders"
-              className={`border-b border-gray-100 pb-4 ${pathname === '/my-orders' ? 'text-blue-600' : ''}`}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 lg:hidden pointer-events-auto"
               onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            <motion.div 
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white z-40 lg:hidden shadow-2xl flex flex-col pt-24 pb-8 px-8 overflow-y-auto"
             >
-              My Orders
-            </Link>
-          )}
-          
-          <div className="border-t border-gray-100 pt-4 flex flex-col gap-4">
-            {user ? (
-              <button 
-                onClick={() => {
-                  logout()
-                  setIsMobileMenuOpen(false)
+              <motion.div 
+                initial="closed"
+                animate="open"
+                exit="closed"
+                variants={{
+                  open: { transition: { staggerChildren: 0.05, delayChildren: 0.1 } },
+                  closed: { transition: { staggerChildren: 0.05, staggerDirection: -1 } }
                 }}
-                className="text-red-500 text-left font-bold"
+                className="flex flex-col gap-6 text-2xl font-black text-[#00274c]"
               >
-                Logout
-              </button>
-            ) : (
-              <Link 
-                href="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="text-[#00274c] font-bold"
-              >
-                Login
-              </Link>
-            )}
-            
-            <Link 
-              href="/contact"
-              className="bg-[#00274c] text-white text-center py-4 rounded-2xl mt-2 hover:bg-blue-900 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Join Westside
-            </Link>
-          </div>
-        </div>
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href || pathname === link.href.replace(/\/$/, '')
+                  return (
+                    <motion.div 
+                      key={link.name}
+                      variants={{
+                        open: { opacity: 1, x: 0 },
+                        closed: { opacity: 0, x: 20 }
+                      }}
+                    >
+                      <Link 
+                        href={link.href}
+                        className={`block border-b border-gray-100 pb-4 ${isActive ? 'text-blue-600' : ''}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    </motion.div>
+                  )
+                })}
+                
+                <motion.div 
+                  variants={{
+                    open: { opacity: 1, x: 0 },
+                    closed: { opacity: 0, x: 20 }
+                  }}
+                  className="border-t border-gray-100 pt-6 flex flex-col gap-4 mt-4"
+                >
+                  {user ? (
+                    <button 
+                      onClick={() => {
+                        logout()
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="text-red-500 text-left font-bold text-xl"
+                    >
+                      Logout
+                    </button>
+                  ) : (
+                    <Link 
+                      href="/login"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="text-[#00274c] font-bold text-xl"
+                    >
+                      Login
+                    </Link>
+                  )}
+                  
+                  <Link 
+                    href="/contact"
+                    className="bg-[#00274c] text-white text-center py-4 rounded-2xl mt-4 hover:bg-blue-900 transition-colors text-lg"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Join Westside
+                  </Link>
+                </motion.div>
+              </motion.div>
 
-        <div className="mt-auto pt-10">
-          <p className="text-sm font-bold text-gray-400 mb-4">CONNECT</p>
-          <a href="https://instagram.com/westside.vbc" target="_blank" rel="noreferrer" className="text-[#00274c] font-bold">
-            @westside.vbc
-          </a>
-        </div>
-      </div>
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-auto pt-10"
+              >
+                <p className="text-sm font-bold text-gray-400 mb-4">CONNECT</p>
+                <a href="https://instagram.com/westside.vbc" target="_blank" rel="noreferrer" className="text-[#00274c] font-bold">
+                  @westside.vbc
+                </a>
+              </motion.div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
       
       <CartDrawer />
     </>

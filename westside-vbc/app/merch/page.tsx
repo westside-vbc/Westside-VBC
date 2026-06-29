@@ -204,7 +204,8 @@ export default function MerchPage() {
                 key={i} 
                 variants={itemVariants}
                 onClick={() => openProductModal(product)}
-                className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col relative"
+                whileHover={{ y: -10, scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)" }}
+                className="group bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] cursor-pointer flex flex-col relative"
               >
                 {/* Decorative glowing orb behind the card on hover */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2rem] z-0 pointer-events-none"></div>
