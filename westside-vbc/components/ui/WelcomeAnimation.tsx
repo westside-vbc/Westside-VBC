@@ -17,7 +17,7 @@ export default function WelcomeAnimation() {
       // Auto-hide the welcome screen after 2.5s so exit animation can play
       const timer = setTimeout(() => {
         setShow(false)
-      }, 2500)
+      }, 1500)
       return () => clearTimeout(timer)
     }
   }, [])
