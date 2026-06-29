@@ -13,6 +13,12 @@ export default function WelcomeAnimation() {
     if (!hasSeenWelcome) {
       setShow(true)
       sessionStorage.setItem("hasSeenWelcome", "true")
+      
+      // Auto-hide the welcome screen after 2.5s so exit animation can play
+      const timer = setTimeout(() => {
+        setShow(false)
+      }, 2500)
+      return () => clearTimeout(timer)
     }
   }, [])
 
