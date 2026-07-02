@@ -5,10 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 
 export default function WelcomeAnimation() {
   const [show, setShow] = useState(false)
-  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    setMounted(true)
     const hasSeenWelcome = sessionStorage.getItem("hasSeenWelcome")
     if (!hasSeenWelcome) {
       setShow(true)
@@ -21,8 +19,6 @@ export default function WelcomeAnimation() {
       return () => clearTimeout(timer)
     }
   }, [])
-
-  if (!mounted) return null
 
   return (
     <AnimatePresence>
