@@ -8,6 +8,7 @@ import PageTransition from "@/components/ui/PageTransition"
 
 import { AuthProvider } from "@/contexts/AuthContext"
 import { CartProvider } from "@/contexts/CartContext"
+import { Toaster } from "react-hot-toast"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
               {children}
             </PageTransition>
             <Sponsors />
+            <Toaster position="bottom-right" />
           </CartProvider>
         </AuthProvider>
       </body>

@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import PageHeader from "@/components/ui/PageHeader"
 import { useAuth } from "@/contexts/AuthContext"
+import toast from "react-hot-toast"
 
 export default function RegisterPage() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { loginWithGoogle } = useAuth()
@@ -20,16 +20,16 @@ export default function RegisterPage() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError("")
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       await updateProfile(userCredential.user, {
         displayName: name
       })
+      toast.success("Account created successfully!")
       router.push("/merch")
     } catch (err: any) {
-      setError(err.message || "Failed to register")
+      toast.error(err.message || "Failed to register")
     } finally {
       setLoading(false)
     }
@@ -38,11 +38,11 @@ export default function RegisterPage() {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true)
-      setError("")
       await loginWithGoogle(true)
+      toast.success("Registered with Google successfully!")
       router.push("/merch")
     } catch (err: any) {
-      setError(err.message || "Failed to register with Google")
+      toast.error(err.message || "Failed to register with Google")
       setLoading(false)
     }
   }
@@ -54,12 +54,6 @@ export default function RegisterPage() {
       <section className="flex-grow flex items-center justify-center py-20 px-6">
         <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
           <h2 className="text-3xl font-black text-[#00274c] mb-6 text-center">Create Account</h2>
-          
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-lg mb-6 text-sm font-medium">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleRegister} className="space-y-4">
             <div>

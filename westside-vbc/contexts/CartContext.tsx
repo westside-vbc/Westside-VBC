@@ -52,11 +52,27 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const cartRef = doc(db, "carts", user.uid)
         const cartSnap = await getDoc(cartRef)
         if (cartSnap.exists()) {
-          setItems(cartSnap.data().items || [])
+          const remoteItems = cartSnap.data().items || []
+          
+          setItems(currentLocalItems => {
+            if (currentLocalItems.length === 0) return remoteItems;
+            
+            const merged = [...remoteItems];
+            currentLocalItems.forEach(localItem => {
+              const existingIdx = merged.findIndex(i => 
+                i.id === localItem.id && i.size === localItem.size && i.color === localItem.color
+              );
+              if (existingIdx > -1) {
+                merged[existingIdx].quantity += localItem.quantity;
+              } else {
+                merged.push(localItem);
+              }
+            });
+            return merged;
+          })
         }
-      } else {
-        setItems([]) // Clear cart if logged out
       }
+      // Note: intentionally not clearing cart on logout so users can shop anonymously
     }
     loadCart()
   }, [user])

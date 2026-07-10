@@ -62,15 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithGoogle = async (isRegister: boolean = false) => {
     try {
       const provider = new GoogleAuthProvider()
-      const result = await signInWithPopup(auth, provider)
-      const additionalInfo = getAdditionalUserInfo(result)
-
-      if (!isRegister && additionalInfo?.isNewUser) {
-        // If they are logging in but the account is new, reject it
-        await deleteUser(result.user)
-        await firebaseSignOut(auth)
-        throw new Error("Account not found. Please register first.")
-      }
+      await signInWithPopup(auth, provider)
     } catch (error: any) {
       console.error("Error signing in with Google:", error)
       throw error

@@ -8,6 +8,7 @@ import { useCart } from "@/contexts/CartContext"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+import toast from "react-hot-toast"
 
 interface Product {
   id: string
@@ -114,12 +115,12 @@ export default function MerchPage() {
     }
 
     if (!selectedSize) {
-      alert("Please select a size first")
+      toast.error("Please select a size first")
       return
     }
 
     if (selectedProduct?.colors && selectedProduct.colors.length > 0 && !selectedColor) {
-      alert("Please select a color first")
+      toast.error("Please select a color first")
       return
     }
 

@@ -6,8 +6,10 @@ import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import { db } from "@/lib/firebase"
 import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { compressImageToBase64 } from "@/lib/utils/imageCompression"
 import PageHeader from "@/components/ui/PageHeader"
 import Image from "next/image"
+import toast from "react-hot-toast"
 
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart()
@@ -18,7 +20,6 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("")
   const [proofFile, setProofFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [orderId, setOrderId] = useState("")
 
@@ -43,41 +44,26 @@ export default function CheckoutPage() {
     )
   }
 
-  // Convert File to Base64 String
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader()
-      fileReader.readAsDataURL(file)
-      fileReader.onload = () => {
-        resolve(fileReader.result as string)
-      }
-      fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-  }
-
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!proofFile) {
-      setError("Please upload proof of payment")
+      toast.error("Please upload proof of payment")
       return
     }
 
-    // Check file size (Firestore document limit is 1MB, so we keep image under 500KB)
-    if (proofFile.size > 500 * 1024) {
-      setError("Image is too large. Please upload an image smaller than 500KB.")
+    if (proofFile.size > 8 * 1024 * 1024) { 
+      // We still want to prevent absurdly massive files before we try to compress them
+      toast.error("Image is too large. Please select an image under 8MB.")
       return
     }
 
     setLoading(true)
-    setError("")
 
     try {
-      // 1. Convert image to base64 string
-      const base64Image = await convertToBase64(proofFile)
+      // 1. Compress image to base64 string
+      const receiptBase64 = await compressImageToBase64(proofFile)
 
-      // 2. Save order to Firestore with the image string
+      // 2. Save order to Firestore with the compressed image string
       const orderData = {
         userId: user.uid,
         userEmail: user.email,
@@ -85,7 +71,7 @@ export default function CheckoutPage() {
         phoneNumber: phone,
         items: items,
         totalAmount: totalPrice,
-        paymentProofUrl: base64Image, // Save the base64 string here
+        paymentProofUrl: receiptBase64,
         status: "Pending", // Pending, Processing, Shipped
         createdAt: serverTimestamp(),
       }
@@ -96,10 +82,11 @@ export default function CheckoutPage() {
       setOrderId(docRef.id)
       clearCart()
       setSuccess(true)
+      toast.success("Order placed successfully!")
 
     } catch (err: any) {
       console.error(err)
-      setError("Failed to process order. Please try again.")
+      toast.error("Failed to process order. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -168,12 +155,6 @@ export default function CheckoutPage() {
         {/* Right Col: Form & Payment */}
         <div className="w-full lg:w-2/3">
           <form onSubmit={handleCheckout} className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 flex flex-col gap-8">
-            
-            {error && (
-              <div className="bg-red-50 text-red-500 p-4 rounded-xl text-sm font-bold">
-                {error}
-              </div>
-            )}
 
             <div>
               <h3 className="text-xl font-black text-[#00274c] mb-4">1. Personal Information</h3>

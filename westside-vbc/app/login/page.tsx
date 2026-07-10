@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import PageHeader from "@/components/ui/PageHeader"
 import { useAuth } from "@/contexts/AuthContext"
+import toast from "react-hot-toast"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const router = useRouter()
   const { loginWithGoogle } = useAuth()
@@ -19,13 +19,13 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    setError("")
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
+      toast.success("Welcome back!")
       router.push("/merch")
     } catch (err: any) {
-      setError(err.message || "Failed to login")
+      toast.error(err.message || "Failed to login")
     } finally {
       setLoading(false)
     }
@@ -34,11 +34,11 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true)
-      setError("")
       await loginWithGoogle()
+      toast.success("Welcome back!")
       router.push("/merch")
     } catch (err: any) {
-      setError(err.message || "Failed to login with Google")
+      toast.error(err.message || "Failed to login with Google")
       setLoading(false)
     }
   }
@@ -50,12 +50,6 @@ export default function LoginPage() {
       <section className="flex-grow flex items-center justify-center py-20 px-6">
         <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md border border-gray-100">
           <h2 className="text-3xl font-black text-[#00274c] mb-6 text-center">Welcome Back</h2>
-          
-          {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-lg mb-6 text-sm font-medium">
-              {error}
-            </div>
-          )}
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
