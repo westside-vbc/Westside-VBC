@@ -63,7 +63,7 @@ export default function MerchPage() {
         "/size.png"
       ], 
       description: "Official Westside VBC sleeveless. Lightweight and breathable.",
-      sizes: ["S", "M", "L", "XL", "XXL", "3L", "4L", "5L", "6L"],
+      sizes: ["S", "M", "L", "XL", "XXL", "3XL", "4XL", "5XL", "6XL"],
       colors: ["Black", "White"]
     },
   ]
