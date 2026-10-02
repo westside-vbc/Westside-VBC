@@ -15,9 +15,46 @@ interface FileChange {
   message: string
 }
 
+const PRIMARY_GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.8-flash"
+const RETRYABLE_GEMINI_STATUSES = new Set([429, 500, 503, 504])
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
 async function getRepoFileTree(owner: string, repo: string, token: string, branch: string): Promise<string[]> {
+  const refRes = await fetch(
+    `${GITHUB_API}/repos/${owner}/${repo}/git/ref/heads/${branch}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    }
+  )
+  if (!refRes.ok) throw new Error(`Failed to resolve branch ${branch}: ${refRes.statusText}`)
+
+  const refData = await refRes.json()
+  const commitSha = refData.object?.sha
+  if (!commitSha) throw new Error(`Failed to resolve commit SHA for branch ${branch}`)
+
+  const commitRes = await fetch(
+    `${GITHUB_API}/repos/${owner}/${repo}/git/commits/${commitSha}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    }
+  )
+  if (!commitRes.ok) throw new Error(`Failed to fetch commit for branch ${branch}: ${commitRes.statusText}`)
+
+  const commitData = await commitRes.json()
+  const treeSha = commitData.tree?.sha
+  if (!treeSha) throw new Error(`Failed to resolve tree SHA for branch ${branch}`)
+
   const res = await fetch(
-    `${GITHUB_API}/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`,
+    `${GITHUB_API}/repos/${owner}/${repo}/git/trees/${treeSha}?recursive=1`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -115,31 +152,46 @@ async function callGemini(
     },
   ]
 
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: systemPrompt }],
-        },
-        contents,
-        generationConfig: {
-          temperature: 0.2,
-          maxOutputTokens: 8192,
-        },
-      }),
-    }
-  )
+  let lastError: Error | null = null
 
-  if (!res.ok) {
-    const error = await res.text()
-    throw new Error(`Gemini API error: ${res.statusText} - ${error}`)
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${PRIMARY_GEMINI_MODEL}:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: {
+            parts: [{ text: systemPrompt }],
+          },
+          contents,
+          generationConfig: {
+            temperature: 0.2,
+            maxOutputTokens: 8192,
+          },
+        }),
+      }
+    )
+
+    if (res.ok) {
+      const data = await res.json()
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated."
+    }
+
+    const errorText = await res.text()
+    lastError = new Error(`Gemini API error (${PRIMARY_GEMINI_MODEL}): ${res.statusText} - ${errorText}`)
+
+    if (!RETRYABLE_GEMINI_STATUSES.has(res.status) || attempt === 3) {
+      break
+    }
+
+    await sleep(500 * attempt)
   }
 
-  const data = await res.json()
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated."
+  return (
+    "I’m temporarily unable to reach Gemini right now, so I can’t complete the AI-assisted request yet. " +
+    "Please try again in a moment."
+  )
 }
 
 function parseFileChanges(response: string): FileChange[] {
