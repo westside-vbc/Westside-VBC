@@ -4,12 +4,13 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/contexts/AuthContext"
 import { useRouter } from "next/navigation"
 import PageHeader from "@/components/ui/PageHeader"
-import { X, Image as ImageIcon, ShoppingBag, PackagePlus, Calendar } from "lucide-react"
+import { X, Image as ImageIcon, ShoppingBag, PackagePlus, Calendar, Bot } from "lucide-react"
 
 import OrdersTab from "@/components/admin/OrdersTab"
 import EventsTab from "@/components/admin/EventsTab"
 import ProductsTab from "@/components/admin/ProductsTab"
 import GalleryTab from "@/components/admin/GalleryTab"
+import AIChatTab from "@/components/admin/AIChatTab"
 
 // Authorized admin emails
 const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
@@ -17,7 +18,7 @@ const ADMIN_EMAILS = ["filemonjose13@gmail.com", "jason4realyt@gmail.com"]
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"orders" | "gallery" | "products" | "events">("orders")
+  const [activeTab, setActiveTab] = useState<"orders" | "gallery" | "products" | "events" | "ai-chat">("orders")
   const [selectedProof, setSelectedProof] = useState<string | null>(null)
 
   useEffect(() => {
@@ -76,12 +77,21 @@ export default function AdminDashboard() {
           >
             <Calendar className="w-5 h-5" /> Events
           </button>
+          <button 
+            onClick={() => setActiveTab("ai-chat")}
+            className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all whitespace-nowrap ${
+              activeTab === "ai-chat" ? "bg-primary text-white shadow-lg" : "bg-white text-gray-500 hover:bg-gray-100"
+            }`}
+          >
+            <Bot className="w-5 h-5" /> AI Chat
+          </button>
         </div>
 
         {activeTab === "events" && <EventsTab />}
         {activeTab === "orders" && <OrdersTab setSelectedProof={setSelectedProof} />}
         {activeTab === "products" && <ProductsTab />}
         {activeTab === "gallery" && <GalleryTab />}
+        {activeTab === "ai-chat" && <AIChatTab userEmail={user?.email || ""} />}
       </section>
 
       {/* Image Modal (for Order Payment Proof) */}
